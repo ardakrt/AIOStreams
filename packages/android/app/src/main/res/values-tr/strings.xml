@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="channel_downloads">İndirmeler</string>
+    <plurals name="downloading_items">
+        <item quantity="one">%d öğe indiriliyor</item>
+        <item quantity="other">%d öğe indiriliyor</item>
+    </plurals>
+
+    <string name="channel_updates">Güncellemeler</string>
+    <string name="updated_to">%1$s sürümüne güncellendi</string>
+    <string name="tap_to_open">Açmak için dokun</string>
+    <string name="update_no_build">Bu cihazın işlemcisi için derleme yok</string>
+    <string name="update_damaged">İndirilen dosya bozuk</string>
+    <string name="update_install_failed">Yükleme başarısız: %1$s</string>
+    <string name="update_feed_answered">Güncelleme kaynağı %1$d yanıtını verdi</string>
+
+    <string name="download_folder_title">İndirmelerin kaydedileceği yeri seç</string>
+    <string name="download_folder_free">%1$s · %2$s boş</string>
+
+    <string name="file_saved">%1$s İndirmeler klasörüne kaydedildi</string>
+    <string name="file_not_saved">%1$s kaydedilemedi</string>
+
+    <string name="webview_version_unknown">bilinmiyor</string>
+    <string name="webview_too_old">Bu cihazın WebView sürümü uygulama için çok eski: %1$s. Uygulama %2$d veya üzerini gerektiriyor.</string>
+    <string name="webview_update">Android System WebView veya sistemi güncelle, ardından uygulamayı yeniden aç.</string>
+</resources>
