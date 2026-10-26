@@ -762,10 +762,6 @@ msgstr "Bottom bar"
 msgid "Brightness {percent}%"
 msgstr "Brightness {percent}%"
 
-#: src/pages/live-tv.tsx
-msgid "Browse program guide"
-msgstr "Browse program guide"
-
 #: src/lib/input/keys.ts
 msgid "Browser Home"
 msgstr "Browser Home"
@@ -890,10 +886,6 @@ msgstr "Channel"
 #: src/pages/live-tv.tsx
 msgid "Channel category"
 msgstr "Channel category"
-
-#: src/pages/live-tv.tsx
-msgid "Channel filters"
-msgstr "Channel filters"
 
 #: src/pages/live-tv.tsx
 #: src/pages/settings/audio.tsx
@@ -2197,10 +2189,6 @@ msgstr "Live TV"
 msgid "Live TV is not available for this server or account."
 msgstr "Live TV is not available for this server or account."
 
-#: src/pages/live-tv.tsx
-msgid "Live TV sections"
-msgstr "Live TV sections"
-
 #: src/components/party/party-sheet.tsx
 msgid "Loading"
 msgstr "Loading"
@@ -3353,10 +3341,6 @@ msgstr "Producer"
 msgid "Program guide"
 msgstr "Program guide"
 
-#: src/pages/live-tv.tsx
-msgid "Program information unavailable"
-msgstr "Program information unavailable"
-
 #: src/components/shortcut-settings.tsx
 msgid "Puts every key back the way it came."
 msgstr "Puts every key back the way it came."
@@ -3657,6 +3641,7 @@ msgid "Retry"
 msgstr "Retry"
 
 #: src/pages/live-player.tsx
+#: src/pages/live-tv.tsx
 msgid "Return to live"
 msgstr "Return to live"
 
@@ -4968,7 +4953,6 @@ msgid "Up"
 msgstr "Up"
 
 #: src/components/player/next-episode.tsx
-#: src/pages/live-tv.tsx
 msgid "Up next"
 msgstr "Up next"
 

@@ -762,10 +762,6 @@ msgstr "Alt çubuk"
 msgid "Brightness {percent}%"
 msgstr "Parlaklık %{percent}"
 
-#: src/pages/live-tv.tsx
-msgid "Browse program guide"
-msgstr "Yayın akışını gez"
-
 #: src/lib/input/keys.ts
 msgid "Browser Home"
 msgstr "Tarayıcı ana sayfası"
@@ -890,10 +886,6 @@ msgstr "Kanal"
 #: src/pages/live-tv.tsx
 msgid "Channel category"
 msgstr "Kanal kategorisi"
-
-#: src/pages/live-tv.tsx
-msgid "Channel filters"
-msgstr "Kanal filtreleri"
 
 #: src/pages/live-tv.tsx
 #: src/pages/settings/audio.tsx
@@ -2197,10 +2189,6 @@ msgstr "Canlı TV"
 msgid "Live TV is not available for this server or account."
 msgstr "Bu sunucuda veya hesapta canlı TV kullanılamıyor."
 
-#: src/pages/live-tv.tsx
-msgid "Live TV sections"
-msgstr "Canlı TV bölümleri"
-
 #: src/components/party/party-sheet.tsx
 msgid "Loading"
 msgstr "Yükleniyor"
@@ -3353,10 +3341,6 @@ msgstr "Yapımcı"
 msgid "Program guide"
 msgstr "Yayın akışı"
 
-#: src/pages/live-tv.tsx
-msgid "Program information unavailable"
-msgstr "Program bilgisi bulunmuyor"
-
 #: src/components/shortcut-settings.tsx
 msgid "Puts every key back the way it came."
 msgstr "Tüm tuşları varsayılan hâline döndürür."
@@ -3657,6 +3641,7 @@ msgid "Retry"
 msgstr "Yeniden dene"
 
 #: src/pages/live-player.tsx
+#: src/pages/live-tv.tsx
 msgid "Return to live"
 msgstr "Canlı yayına dön"
 
@@ -4968,7 +4953,6 @@ msgid "Up"
 msgstr "Yukarı"
 
 #: src/components/player/next-episode.tsx
-#: src/pages/live-tv.tsx
 msgid "Up next"
 msgstr "Sıradaki"
 

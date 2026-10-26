@@ -50,6 +50,31 @@ function Shade() {
   );
 }
 
+export { Shade as HeroShade };
+
+/** Shared by featured titles and live broadcasts, using the hero's own type and separators. */
+export function HeroMeta({ parts }: { parts: [string, React.ReactNode][] }) {
+  const shown = parts.filter(([, value]) => value);
+  if (!shown.length) return null;
+  return (
+    <div
+      data-ui="hero-meta"
+      className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm text-gray-200"
+    >
+      {shown.map(([name, value], index) => (
+        <React.Fragment key={name}>
+          {index > 0 && (
+            <span data-ui="meta-separator" className="text-gray-500">
+              •
+            </span>
+          )}
+          <span data-name={name}>{value}</span>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
 /** Keeps a backdrop within 2.6 times its height, so a wide window does not crop away most of it. */
 export function BackdropFrame({
   className,
@@ -222,14 +247,18 @@ function Backdrops({
 }
 
 /** An item's logo or title, facts, overview and buttons. */
-function HeroDetails({
+export function HeroDetails({
   item,
   overviewClass,
   actions = true,
+  metadata,
+  heading = 'h1',
 }: {
   item: BaseItemDto;
   overviewClass: string;
   actions?: boolean;
+  metadata?: React.ReactNode;
+  heading?: 'h1' | 'h2';
 }) {
   const { client } = useSession();
   const picker = useVersionPicker();
@@ -261,7 +290,7 @@ function HeroDetails({
     ],
     ['genres', item.Genres?.slice(0, 3).join(', ')],
   ];
-  const meta = parts.filter(([, part]) => part);
+  const Heading = heading;
 
   return (
     <>
@@ -274,30 +303,14 @@ function HeroDetails({
           className="max-h-20 max-w-[min(24rem,75%)] object-contain object-left lg:max-h-28"
         />
       ) : (
-        <h1
+        <Heading
           data-ui="hero-title"
           className="line-clamp-2 text-3xl font-bold leading-tight lg:text-5xl"
         >
           {itemTitle(item)}
-        </h1>
+        </Heading>
       )}
-      {meta.length > 0 && (
-        <div
-          data-ui="hero-meta"
-          className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm text-gray-200"
-        >
-          {meta.map(([name, part], i) => (
-            <React.Fragment key={name}>
-              {i > 0 && (
-                <span data-ui="meta-separator" className="text-gray-500">
-                  •
-                </span>
-              )}
-              <span data-name={name}>{part}</span>
-            </React.Fragment>
-          ))}
-        </div>
-      )}
+      {metadata ?? <HeroMeta parts={parts} />}
       {item.Overview && (
         <p
           data-ui="hero-overview"

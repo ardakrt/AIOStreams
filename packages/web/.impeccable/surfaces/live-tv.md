@@ -4,19 +4,19 @@ Mode: Operate. Platform: existing React web interface in the Windows desktop wra
 
 Direction: extend the incumbent AIOStreams interface. Keep its black surfaces, Inter typography, white primary actions, rounded controls and existing sidebar/mobile navigation. No new visual identity, artwork, promotional copy or external IPTV setup.
 
-The primary task is choosing and watching a channel from the user's existing Jellyfin server. The user rejected the initial oversized information card and selected a program-led showcase, with program artwork/information ahead of a compact adjacent channel list. Empty guide data must never prevent playback. Preserve recording and favorite controls.
+The primary task is choosing and watching a channel from the user's existing Jellyfin server. Program details and compact searchable channels remain the focus, using the surrounding application's actual components rather than a separate design system. Empty guide data must never prevent playback. Preserve recording and favorite controls.
 
 ## Direction contract
 
-THESIS: A program-led TV showcase replaces the stretched settings-card composition. Selection feels like browsing television, with one primary watch action.
+THESIS: Live TV is a native-feeling AIOStreams page, not an independent IPTV dashboard. The user explicitly rejected the separate showcase styling and pinned the existing application as visual authority.
 
-OWN-WORLD: AIOStreams black canvas, Inter, white watch action, fine neutral dividers; genuine program art and channel marks. No fabricated broadcast artwork or image-shaped placeholders.
+OWN-WORLD: Reuse HeroDetails, HeroShade, BackdropFrame, MediaRow, WideCard, PillTabs, TextInput, Button and IconButton. Inherit their tokens, type, pills, spacing, focus and motion. Remove the custom Live TV stylesheet, boxed stage and decorative wordmark.
 
 STORY: Find a channel, understand what is airing and what follows, then watch. Keep the last selected channel, hide repetitive missing-data labels, and surface real categories only.
 
-FIRST VIEWPORT: At 2560px, a bounded showcase occupies the main column, compact searchable channels sit alongside, and the daily schedule follows in a time-led strip. Program title, synopsis and watch action retain a readable measure. At 1280px the hierarchy compresses; on phones showcase precedes channels and guide.
+FIRST VIEWPORT: The standard page title and pill tabs precede native hero details. Genuine artwork blends into the page through the existing hero mask; absent artwork produces compact unboxed details. Guide programs use the shared media row, and searchable channels sit alongside on wide screens. No independent canvas, clock, palette or card language.
 
-FORM: Program showcase, grounded candidate 4, selected explicitly by the user from seed a58dfc9e. Code-led working interface this run; no workflow default is stored. Signature interaction: channel selection changes the program stage while retaining guide context.
+FORM: User-pinned integration into the incumbent application; this supersedes seed a58dfc9e's showcase treatment. No new concept tournament. Signature interaction: selecting a channel or guide program updates the same native hero details while preserving guide context.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 

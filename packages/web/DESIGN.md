@@ -1,178 +1,147 @@
 ---
-name: AIOStreams web app — Live TV showcase
-description: Program-led showcase and compact channel rail, recorded from the implemented extension.
+name: AIOStreams web app — Live TV integration
+description: Live TV inherits the existing app's hero, media rows and shared controls.
 colors:
-  canvas: "#070707"
-  stage: "#111114"
-  foreground: "#f7f7f8"
+  background: "var(--background)"
+  foreground: "var(--foreground)"
+  muted: "var(--muted)"
+  paper: "var(--paper)"
+  border: "var(--border)"
+  ring: "var(--ring)"
   white: "#ffffff"
-  synopsis: "#c1c1ca"
-  meta: "#b5b5bf"
-  channel-name: "#e0e0e8"
-  channel-program: "#a0a0ad"
-  divider: "#ffffff14"
-  selected-channel: "#ffffff10"
-  guide-surface: "#ffffff04"
-  live-text: "#ff9696"
+  black: "#000000"
 typography:
-  program-title:
+  hero-title:
     fontFamily: "Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
-    fontSize: "clamp(32px, 3vw, 54px)"
-    fontWeight: 600
-    lineHeight: 1.1
-    letterSpacing: "-0.035em"
-  synopsis:
+    fontSize: "1.875rem"
+    fontWeight: 700
+    lineHeight: 1.25
+  hero-title-desktop:
     fontFamily: "Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
-    fontSize: "14px"
-    lineHeight: 1.7
-  section-title:
+    fontSize: "3rem"
+    fontWeight: 700
+    lineHeight: 1.25
+  label:
     fontFamily: "Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
-    fontSize: "17px"
-    fontWeight: 600
-    letterSpacing: "-0.02em"
-  channel-name:
-    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
-    fontSize: "13px"
+    fontSize: "0.875rem"
     fontWeight: 500
-  program-card-title:
-    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
-    fontSize: "15px"
-    fontWeight: 500
-    lineHeight: 1.45
 rounded:
   control: "8px"
-  guide-card: "10px"
-  stage: "16px"
+  pill: "9999px"
 spacing:
-  tight: "12px"
-  group: "18px"
-  rail-inset: "24px"
-  columns: "28px"
+  compact: "8px"
+  detail: "16px"
+  section: "32px"
 components:
-  button-white:
+  hero-watch:
     backgroundColor: "{colors.white}"
-    textColor: "#000000"
-    rounded: "{rounded.control}"
+    textColor: "{colors.black}"
+    rounded: "{rounded.pill}"
     height: "40px"
     padding: "0 16px"
-  guide-card:
-    backgroundColor: "{colors.guide-surface}"
-    rounded: "{rounded.guide-card}"
-    padding: "18px"
-  channel-selected:
-    backgroundColor: "{colors.selected-channel}"
-    rounded: "{rounded.control}"
-  input-search:
-    backgroundColor: "#ffffff06"
-    textColor: "#eeeeee"
-    rounded: "{rounded.control}"
-    padding: "10px 12px 10px 36px"
+  input-basic:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.foreground}"
+    rounded: "var(--radius)"
+    height: "40px"
+    padding: "0 12px"
 ---
 
-# Design System: AIOStreams web app — Live TV showcase
+# Design System: AIOStreams web app — Live TV integration
 
 ## Overview
 
-**Creative North Star: "Program showcase"**
+**Creative North Star: "The existing AIOStreams app"**
 
-This record describes the user-selected Live TV composition: current-program information leads, a compact searchable channel rail sits alongside it, and the selected channel's daily guide follows. It supersedes the earlier oversized information-card layout. The surrounding AIOStreams black canvas, Inter typography, shared controls and navigation remain incumbent.
+The user explicitly pinned the surrounding app as visual authority and rejected the separate showcase treatment. This record describes Live TV's reuse of existing app primitives, not a new palette, typography system or whole-app design approval. The bespoke Live TV stylesheet, boxed stage and decorative wordmark were removed.
 
-The detailed shades and type sizes in this record come from the finished `live-tv.css`; they are not claimed to be an exact reuse of the previous extension's palette or type ramp. The current evidence is visual and fixture-based. Dense fixtures use 589 illustrative channels and nine programs; neither those captures nor this document establish a fresh native launch or live-server result. The inspected real server supplied no program artwork.
+`HeroDetails`, `HeroMeta`, `HeroShade` and `BackdropFrame` now supply the same hero language used by the home route. `MediaRow`, `WideCard`, `PillTabs` and the shared UI package provide browsing and controls. The optional hero metadata and heading inputs preserve the default home behavior. The frontmatter references incumbent theme variables; it does not freeze a new Live TV color ramp.
+
+Evidence for this revision is the current source and app-style fixture captures at wide desktop, desktop and phone sizes, compared with the actual home route. This is visual/fixture evidence, not a fresh claim of native playback or live-server validation.
 
 **Key Characteristics:**
-- Program-led hierarchy with a compact channel rail on the right.
-- Genuine optional art, with a content-sized text/logotype fallback.
-- Time-led guide cards with bounded width and keyboard scrolling.
-- Remembered channel selection and restrained neutral layering.
+- Shared home-hero typography and primary action geometry.
+- Transparent page integration with genuine optional artwork.
+- Existing pill tabs, controls and media-row navigation.
+- Compact missing-art states without invented image panels.
 
 ## Colors
 
 ### Primary
 
-- **White:** the shared watch action, active navigation marker and selected channel name.
-
-### Secondary
-
-- **Live text:** the muted warm red of the live-status badge. Favorite status and current-program labels use related warm status treatments from the implementation.
+- **White and black:** the existing white hero action uses dark text. Its shared hover states remain owned by the button component.
 
 ### Neutral
 
-- **Canvas and stage:** nearly black but distinct grounds separate the surrounding page from the program stage.
-- **Foreground and channel name:** primary information stays near white.
-- **Synopsis, meta and channel program:** separate cool neutral shades establish density and hierarchy; they are intentionally distinct values in the finished CSS.
-- **Divider, selected channel and guide surface:** low-opacity white layers mark structure and selection without elevated card shadows.
+- **Background and foreground:** inherited directly from the active app theme. The Live TV workspace adds no independent canvas or large gray stage.
+- **Muted, paper and border:** existing theme roles for supporting information, inputs, the calendar popover and separators.
+- **Ring:** the app's global focus treatment remains authoritative.
 
-**The Selection Rule.** Use the implemented row surface, selected name treatment and explicit control state to distinguish the chosen channel. Do not turn every channel into an independent elevated card.
+**The Inheritance Rule.** Reuse the actual shared component and theme role instead of approximating its appearance with new local shades.
 
 ## Typography
 
-**Display and body font:** Inter with the incumbent system sans-serif fallback stack.
+**Display and body font:** the shared Inter stack.
 
-The current program title uses a balanced, tightly tracked display treatment with a readable character measure. The stage synopsis has a relaxed line height and a three-line clamp. Channel names are compact medium-weight labels; their current-program summaries are smaller and truncated. Guide card titles sit between those roles, and time information uses tabular numerals.
+The live program heading is rendered by `HeroDetails`, using the same bold, tightly led title as the home hero: the compact title token below the desktop breakpoint and the desktop token above it. `HeroMeta` supplies its existing small-text row and separators. The overview retains the hero's gray supporting text and responsive line clamps, rather than a bespoke synopsis scale.
 
-The stage title becomes 36px in the intermediate layout and 32px on small phones. Synopsis copy becomes 13px on phones, while guide and rail headings remain compact. These values describe this showcase; they do not redefine every AIOStreams page heading.
+Page titles use the standard bold page-heading treatment. Channel labels, program captions, dates and controls use their existing app roles. These are inherited variants, not a new Live TV type ramp.
 
-**The Hierarchy Rule.** Make the current program the reading entry point; channel navigation and schedule metadata support it.
+**The Shared Hero Rule.** Home and Live TV hero titles and primary actions must remain the same components, including typography, pill radius, dimensions and padding.
 
 ## Layout
 
-The shell is centered and capped at 1760px. Its desktop grid gives the stage and guide the flexible main column and places a 350px rail on the right, separated by the column gap and a fine vertical divider. The rail narrows to 290px below 1250px. It stays sticky on desktop and scrolls its list independently.
+The page uses `PageBody`, the existing title and pill tabs. A wide-screen grid places the flexible details/guide area beside a 20rem channel list at the extra-large breakpoint. Below that breakpoint the same content stacks. There is no fixed-width showcase shell or independent stage background.
 
-At 900px and below, the order becomes stage, next-program line, channels, then guide. The rail loses sticky positioning and its divider; the channel list has a bounded height. At 540px and below, the header wraps, the clock is omitted, and the stage takes the available width.
+Genuine supplied artwork uses the shared backdrop frame, mask and shades. When artwork is missing or all candidates fail, the details have compact content-driven height; no image-shaped placeholder reserves an empty hero. The existing hero measure bounds title and overview text.
 
-**The Content-Sized Fallback Rule.** A stage without genuine artwork derives its height from its content and padding. The artwork-specific minimum heights apply only to the art variant. Do not add a fixed-height image placeholder to an empty-art program.
+Guide programs use the shared wide `MediaRow`, including its bounded item widths, keyboard/focus behavior, current-program starting position and visible scrolling arrows. These arrows scroll programs only. A separate calendar button opens the shared `Popover` containing date, previous-day, next-day and Today controls. Date selection must not masquerade as media-row navigation.
 
-The guide is a horizontal, proximity-snapping strip. Cards are bounded between their minimum and maximum widths rather than expanding a lone program across the main column. The strip is keyboard-focusable: left/right navigation scrolls it, Home/End reach its boundaries, and initial positioning brings the current program into view. Selected rail rows are likewise brought into their list viewport when needed. Selection is stored per server and user.
+On narrow layouts, the Channels action near playback controls scrolls to and focuses the channel heading. The list retains its bounded vertical scroll area; server/user-scoped selection is remembered and the selected row is brought into view when necessary. This avoids requiring a long guide traversal merely to find channel selection.
 
 ## Elevation & Depth
 
-The showcase uses subtle tonal differences, thin borders and contained surfaces, without new card shadows. Genuine program art receives directional dark gradients to retain title and action legibility. The no-art stage stays a plain dark field. The inherited navigation and native playback overlays retain their existing treatments.
-
-The stage's short reveal uses a small movement and fade. Reduced-motion preference disables this reveal and transitions within the surface. This is a bounded change-of-selection cue rather than a repeated entrance animation for every row.
+Live TV adds no card shadow or raised showcase surface. Artwork blends into the page using the home hero's existing masks and directional shades. Shared popovers, tooltips and navigation retain the elevation owned by those primitives. Loading uses `Skeleton`; actionable errors use `LuffyError`, rather than a separate visual vocabulary.
 
 ## Shapes
 
-The stage has the largest corner radius; guide cards use the intermediate radius, and controls and rail rows share the control radius. Progress tracks are thin and contained. Logos keep their real proportions. Missing small logos use channel-name initials, while the larger decorative fallback uses a single-line text/logotype constrained to its available width. It truncates instead of wrapping into a vertical wordmark, and is omitted on phones.
+Primary hero actions, icon actions and local tabs reuse the app's pills. Inputs and channel selection areas use existing control corners. Genuine images keep the shared artwork component's behavior. Missing channel marks use the existing TV icon fallback; no decorative text watermark is introduced.
 
 ## Components
 
-### Buttons
+### Hero details and actions
 
-The shared white watch action is the primary control. The adjacent square favorite control uses an outline and a distinct pressed state. Recording and refresh actions stay secondary. Shared disabled and focus behavior remains in force.
+Render the shown program through `HeroDetails`, with `HeroMeta` carrying channel, time and status. Use the shared white pill button for watching and shared icon/tooltip controls for favorites. Inspecting another guide program updates those same hero details; Return to live restores the broadcast context. Default home hero behavior remains intact.
 
-### Program stage
+### Media rows and program entries
 
-Show the channel mark/name and current status, then the program title, supplied metadata, synopsis and watch action. The optional large channel mark is supporting material. Use only genuine server-provided program images; failed candidates fall through without fabricated art. Missing program information falls back to the channel name rather than repeating empty-data labels.
+Use `WideCard` only when genuine program artwork exists. Without it, show unboxed, clickable time/title/description text within the same media row. Recording controls reflect server state and account permissions. Do not create gray image substitutes or an independent schedule-card style.
 
-### Channel rail
+### Channel list
 
-Rows combine a channel number, contained logo or initials, cleaned channel name, current-program text and quality badges found in the actual server name. An adjacent quick-play control appears for selection, hover or keyboard focus; it remains visible on narrow screens. Search normalizes punctuation and Turkish accents. Filters expose favorites and real supplied categories. Remember the selected channel rather than resetting it when the list refreshes.
+Use the existing `TextInput`, `PillTabs`, `Artwork` and button/icon-button patterns. Rows show channel name, available current-program information and server-derived quality or channel number. Selection and quick play keep the app's hover/focus behavior. Search, favorites, real categories and remembered selection remain functional.
 
-### Guide cards
+### Calendar, loading and errors
 
-Each card leads with a time range, then title and a bounded synopsis. Current and past programs have distinct surface/text treatments. Recording controls use the server's actual timer state and account permissions. A sparse guide remains compact instead of stretching one card to fill the stage width.
-
-### Inputs / Fields
-
-The compact search field has an inset search icon, a low-opacity fill and thin border. Section navigation uses text and an active underline. The date field retains native dark date-picker behavior; date navigation and Today remain lightweight adjacent controls. Keyboard focus follows the global app outline.
+The calendar is a distinct shared popover, opened by a labeled calendar action. Its internal arrows change dates; the media-row arrows outside it browse programs. Shared skeleton and error components cover loading and failure. Missing guide information does not prevent watching.
 
 ### Recordings and playback
 
-Recordings remain a separate section using existing list and button patterns. Playback is functionally preserved by this layout work; native playback and recording-operation claims are outside this turn's visual/fixture evidence.
+Recordings remain a separate section using incumbent lists and controls. This document's scope is the current Live TV surface and reused primitives; it does not certify playback overlays, native startup or server writes from fixture appearance.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** lead with program information and keep the channel rail compact.
-- **Do** let missing-art stages size to their content.
-- **Do** keep guide cards bounded and the strip reachable by keyboard.
-- **Do** preserve selection and reveal the selected/current item within its scroll container.
-- **Do** use genuine supplied art or the implemented text/logotype fallback.
+- **Do** reuse the actual home hero and shared controls.
+- **Do** inherit theme roles rather than introducing local palette or type ramps.
+- **Do** keep absent-art details compact and guide entries unboxed.
+- **Do** distinguish calendar navigation from program scrolling.
+- **Do** keep Channels reachable beside the narrow-layout playback area.
 
 ### Don't:
-- **Don't** stretch sparse guide cards or empty artwork areas to fill unused space.
-- **Don't** let the decorative logotype wrap or overpower the program title.
-- **Don't** invent categories, quality claims or broadcast imagery.
-- **Don't** present fixture captures as live-server or native-playback evidence.
+- **Don't** restore a giant gray stage, decorative watermark or bespoke showcase stylesheet.
+- **Don't** reserve an empty artwork rectangle for missing program images.
+- **Don't** change the home hero's default behavior to accommodate Live TV.
+- **Don't** present fixture captures as fresh native-playback or server-operation evidence.
 
-Not canonized: the previous palette/type entries and reversed mobile reading order were superseded, not preserved as guidance. The large fallback's low-opacity text is decorative and is not a body-copy contrast token. No fresh native-launch approval is asserted by this record.
+Not canonized: the rejected showcase palette, title ramp, fixed stage and card language are superseded. Shared muted styles are recorded as inherited usage, not as an independent contrast approval. No whole-app or fresh native validation is asserted.

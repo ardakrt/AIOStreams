@@ -52,6 +52,7 @@ export function LiveRecordings() {
                   </div>
                   <Button
                     intent="gray-outline"
+                    className="rounded-full"
                     disabled={actions.cancel.isPending}
                     onClick={() =>
                       actions.cancel.mutate(timer, { onError: fail })
