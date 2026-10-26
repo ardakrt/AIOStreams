@@ -107,7 +107,64 @@ test('live direct streams use the authenticated server path and live session, ne
   assert.equal(stream.method, 'DirectStream');
 });
 
-test('a required tuner is opened once, and concurrent close callers await the same release', async () => {
+test('auto-open starts a tuner in one request and still releases it exactly once', async () => {
+  const { client, calls } = fake((_, path) => {
+    if (path.endsWith('/PlaybackInfo'))
+      return {
+        PlaySessionId: 'p1',
+        MediaSources: [
+          {
+            Id: 's1',
+            RequiresOpening: true,
+            LiveStreamId: 'l1',
+            SupportsDirectPlay: true,
+            Container: 'ts',
+          },
+        ],
+      };
+  });
+  const session = await openChannel(client, 'user', 'channel', true);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].body.AutoOpenLiveStream, true);
+  assert.equal(calls[0].body.EnableDirectPlay, true);
+  assert.equal(session.method, 'DirectPlay');
+  assert.equal(new URL(session.url).searchParams.get('LiveStreamId'), 'l1');
+  await Promise.all([session.close(), session.close()]);
+  assert.equal(
+    calls.filter((call) => call.path === '/LiveStreams/Open').length,
+    0
+  );
+  assert.equal(
+    calls.filter((call) => call.path === '/LiveStreams/Close').length,
+    1
+  );
+});
+
+test('an invalid auto-opened source is released rather than leaking its tuner', async () => {
+  const { client, calls } = fake((_, path) => {
+    if (path.endsWith('/PlaybackInfo'))
+      return {
+        MediaSources: [
+          {
+            Id: 's1',
+            LiveStreamId: 'l1',
+            SupportsTranscoding: true,
+            TranscodingUrl: 'https://other.test/steal',
+          },
+        ],
+      };
+  });
+  await assert.rejects(
+    openChannel(client, 'user', 'channel', true),
+    /invalid-stream/
+  );
+  assert.equal(
+    calls.filter((call) => call.path === '/LiveStreams/Close').length,
+    1
+  );
+});
+
+test('servers returning an unopened tuner fall back to explicit open, and close callers share the release', async () => {
   let release;
   const wait = new Promise((r) => {
     release = r;
@@ -131,7 +188,7 @@ test('a required tuner is opened once, and concurrent close callers await the sa
     if (path === '/LiveStreams/Close') return wait;
   });
   const session = await openChannel(client, 'user', 'channel', true);
-  assert.equal(calls[0].body.AutoOpenLiveStream, false);
+  assert.equal(calls[0].body.AutoOpenLiveStream, true);
   assert.equal(calls[1].body.OpenToken, 'open');
   const a = session.close(),
     b = session.close();

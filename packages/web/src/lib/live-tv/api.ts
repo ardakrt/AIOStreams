@@ -158,7 +158,9 @@ export async function openChannel(
   const body = {
     UserId: userId,
     IsPlayback: true,
-    AutoOpenLiveStream: false,
+    // Let Jellyfin negotiate and open in one round trip; keep the explicit-open
+    // fallback below for servers that still return an unopened source.
+    AutoOpenLiveStream: true,
     EnableDirectPlay: native && !transcode,
     EnableDirectStream: native && !transcode,
     EnableTranscoding: true,

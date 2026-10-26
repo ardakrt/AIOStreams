@@ -70,6 +70,9 @@ export function LivePlayerPage({ channelId }: { channelId: string }) {
     enabled: allowed,
     staleTime: 30_000,
   });
+  // Channel details refresh in parallel; cached list metadata is enough to play.
+  const channelItem =
+    channel.data ?? channels.data?.find((item) => item.Id === channelId);
   const prefs = usePlaybackPrefs();
   usePlayerPage();
   usePlayerFullscreen(true);
@@ -131,7 +134,7 @@ export function LivePlayerPage({ channelId }: { channelId: string }) {
     setAttempt((n) => n + 1);
   }, []);
   const back = () => navigate(to.liveTv, { replace: true });
-  if (!allowed || failed || channel.error)
+  if (!allowed || failed || (channel.error && !channelItem))
     return (
       <div className="fixed inset-0 z-20 flex items-center justify-center bg-black p-6">
         <div role="alert" className="max-w-md space-y-5 text-center">
@@ -157,7 +160,7 @@ export function LivePlayerPage({ channelId }: { channelId: string }) {
         </div>
       </div>
     );
-  if (!playback || !channel.data || prefs.isLoading)
+  if (!playback || !channelItem || prefs.isLoading)
     return (
       <div className="fixed inset-0 z-20 flex flex-col items-center justify-center gap-5 bg-black">
         <p role="status">
@@ -171,7 +174,7 @@ export function LivePlayerPage({ channelId }: { channelId: string }) {
   return (
     <LiveVideo
       key={`${channelId}:${attempt}:${transcode}`}
-      item={channel.data}
+      item={channelItem}
       playback={playback}
       prefs={prefs.prefs}
       finish={finish}
