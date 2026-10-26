@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-26T18:52:12Z",
+  "title": "Design System: AIOStreams web app — Live TV extension",
+  "extensions": {
+    "colorMeta": {
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Canvas"
+      },
+      "white": {
+        "role": "primary",
+        "displayName": "White"
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface"
+      },
+      "selected-surface": {
+        "role": "neutral",
+        "displayName": "Selected surface"
+      },
+      "secondary-text": {
+        "role": "neutral",
+        "displayName": "Secondary text"
+      }
+    },
+    "typographyMeta": {
+      "section-title": {
+        "displayName": "Section title",
+        "purpose": "Repeated section headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Program descriptions and supporting metadata."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Controls and section navigation."
+      }
+    },
+    "motion": [
+      {
+        "name": "player-controls",
+        "value": "opacity 200ms cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Playback control visibility; disabled under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "White action",
+      "kind": "button",
+      "refersTo": "button-white",
+      "description": "Shared primary watch action.",
+      "html": "<button class=\"ds-white-action\">Canlı izle</button>",
+      "css": ".ds-white-action{font-family:Inter,sans-serif;font-size:14px;font-weight:500;height:40px;padding:0 16px;border:1px solid transparent;border-radius:8px;background:#fff;color:#000;cursor:pointer}.ds-white-action:hover{background:rgb(var(--color-gray-200,209 209 209))}.ds-white-action:active{background:rgb(var(--color-gray-300,202 202 202))}.ds-white-action:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:2px}.ds-white-action:disabled{opacity:.5;pointer-events:none}"
+    },
+    {
+      "name": "Secondary action",
+      "kind": "button",
+      "description": "Shared dark gray outline action.",
+      "html": "<button class=\"ds-secondary-action\">Yenile</button>",
+      "css": ".ds-secondary-action{font-family:Inter,sans-serif;font-size:14px;font-weight:500;height:40px;padding:0 16px;border:1px solid rgb(var(--color-gray-400,143 143 143)/.2);border-radius:8px;background:transparent;color:rgb(var(--color-gray-300,202 202 202));cursor:pointer}.ds-secondary-action:hover{background:rgb(var(--color-gray-500,90 90 90)/.15)}.ds-secondary-action:active{background:rgb(var(--color-gray-500,90 90 90)/.25)}.ds-secondary-action:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:2px}.ds-secondary-action:disabled{opacity:.5;pointer-events:none}"
+    },
+    {
+      "name": "Channel search",
+      "kind": "input",
+      "refersTo": "input-search",
+      "description": "Channel-name and number filter.",
+      "html": "<input class=\"ds-channel-search\" type=\"search\" aria-label=\"Kanal ara\" placeholder=\"Kanal ara\" />",
+      "css": ".ds-channel-search{font-family:Inter,sans-serif;font-size:14px;padding:10px 12px;border:1px solid rgb(255 255 255/.15);border-radius:8px;background:rgb(255 255 255/.05);color:#fff}.ds-channel-search::placeholder{color:rgb(255 255 255/.65)}.ds-channel-search:hover{border-color:rgb(255 255 255/.15)}.ds-channel-search:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:2px}"
+    },
+    {
+      "name": "Selected channel",
+      "kind": "custom",
+      "refersTo": "channel-selected",
+      "description": "Full-width channel choice with an explicit selected state.",
+      "html": "<button class=\"ds-channel\" aria-pressed=\"true\"><span class=\"ds-channel-name\">Deneme kanalı</span><span class=\"ds-channel-program\">Deneme programı</span></button>",
+      "css": ".ds-channel{display:block;width:100%;padding:12px;border:0;border-radius:8px;background:rgb(255 255 255/.1);color:#fff;text-align:start;font-family:Inter,sans-serif;cursor:pointer}.ds-channel-name{display:block;font-size:16px;font-weight:500}.ds-channel-program{display:block;margin-top:4px;font-size:14px;color:rgb(255 255 255/.65)}.ds-channel:hover{background:rgb(255 255 255/.1)}.ds-channel:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:-2px}"
+    },
+    {
+      "name": "Section navigation",
+      "kind": "nav",
+      "description": "Local channel/guide and recordings selection.",
+      "html": "<nav class=\"ds-sections\"><button aria-pressed=\"true\">Kanallar ve yayın akışı</button><button aria-pressed=\"false\">Kayıtlar</button></nav>",
+      "css": ".ds-sections{display:flex;gap:24px;border-bottom:1px solid rgb(255 255 255/.1)}.ds-sections button{padding:0 4px 12px;border:0;border-bottom:2px solid transparent;background:transparent;color:rgb(255 255 255/.65);font:500 14px Inter,sans-serif;cursor:pointer}.ds-sections button[aria-pressed=true]{border-bottom-color:#fff;color:#fff}.ds-sections button:hover{color:#fff}.ds-sections button:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:4px}"
+    },
+    {
+      "name": "Current program container",
+      "kind": "card",
+      "description": "Tonal information surface without an added shadow.",
+      "html": "<section class=\"ds-program\"><h3>Deneme programı</h3><p>Program açıklaması</p></section>",
+      "css": ".ds-program{padding:20px;border-radius:16px;background:rgb(255 255 255/.05);color:#fff;font-family:Inter,sans-serif}.ds-program h3{margin:0;font-size:20px;font-weight:500;line-height:1.4}.ds-program p{margin:12px 0 0;font-size:14px;line-height:1.625;color:rgb(255 255 255/.65)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Existing AIOStreams interface",
+    "overview": "This is a descriptive record of the Live TV extension within the established app, not a new identity or a whole-app design audit. Evidence is the shared theme and button implementation, the Live TV pages, and the captured channel/guide surface. Playback overlays are described from code; their visual states were outside the finish review's capture scope.\n\nThe interface keeps attention on channel names, program information and watching. White primary actions sit against nearly black surfaces. Typography and compact controls carry hierarchy without introducing new artwork or promotional decoration.",
+    "keyCharacteristics": [
+      "Restrained neutral surfaces with clear selected states.",
+      "Inter typography shared with the surrounding app.",
+      "Library icons and genuine server-provided channel artwork.",
+      "Lightweight overlays above the native video surface."
+    ],
+    "rules": [
+      {
+        "name": "The Selection Rule",
+        "body": "Distinguish selection through surface tone and an explicit control state; the channel list uses `aria-pressed`, and section controls add a white underline.",
+        "section": "colors"
+      },
+      {
+        "name": "The Content Hierarchy Rule",
+        "body": "Give the channel or program name more emphasis than its number, time or explanatory text.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "Do reuse the existing shared controls and Inter typography.",
+      "Do keep primary watching actions prominent and metadata subordinate.",
+      "Do use real channel artwork or the existing TV icon fallback.",
+      "Do preserve keyboard focus and a readable secondary-text treatment."
+    ],
+    "donts": [
+      "Don't treat the Live TV two-column composition as a whole-app layout mandate.",
+      "Don't replace server program information with invented content or decorative artwork.",
+      "Don't canonize uncaptured playback or recording states as visually reviewed."
+    ]
+  }
+}

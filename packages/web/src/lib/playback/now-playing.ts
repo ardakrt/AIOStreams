@@ -27,6 +27,8 @@ function setHandler(
 }
 
 interface Actions {
+  /** Broadcasts do not expose the file player's seek commands. */
+  live?: boolean;
   onStop(): void;
   onNext?: () => void;
   onPrevious?: () => void;
@@ -85,9 +87,10 @@ export function useNowPlaying(
         actions.onPrevious?.();
         break;
       case 'seek':
-        player.seek(key.position);
+        if (!actions.live) player.seek(key.position);
         break;
       case 'skip': {
+        if (actions.live) break;
         const to = Math.max(0, positionMs + key.offset);
         player.seek(durationMs ? Math.min(durationMs, to) : to);
       }
@@ -199,6 +202,7 @@ export function useNowPlaying(
     !host.player && !app && 'mediaSession' in navigator
       ? navigator.mediaSession
       : null;
+  const live = !!actions.live;
 
   React.useEffect(() => {
     if (!session) return;
@@ -220,15 +224,24 @@ export function useNowPlaying(
       ['stop', () => press({ action: 'stop' })],
       [
         'seekbackward',
-        (d) => press({ action: 'skip', offset: -(d.seekOffset ?? 10) * 1000 }),
+        live
+          ? null
+          : (d) =>
+              press({ action: 'skip', offset: -(d.seekOffset ?? 10) * 1000 }),
       ],
       [
         'seekforward',
-        (d) => press({ action: 'skip', offset: (d.seekOffset ?? 10) * 1000 }),
+        live
+          ? null
+          : (d) =>
+              press({ action: 'skip', offset: (d.seekOffset ?? 10) * 1000 }),
       ],
       [
         'seekto',
-        (d) => press({ action: 'seek', position: (d.seekTime ?? 0) * 1000 }),
+        live
+          ? null
+          : (d) =>
+              press({ action: 'seek', position: (d.seekTime ?? 0) * 1000 }),
       ],
       [
         'previoustrack',
@@ -241,7 +254,7 @@ export function useNowPlaying(
     return () => {
       for (const [action] of handlers) setHandler(session, action, null);
     };
-  }, [session, press, hasPrevious, hasNext]);
+  }, [session, press, hasPrevious, hasNext, live]);
 
   const told = React.useRef<{ at: number; positionMs: number } | null>(null);
   React.useEffect(() => {
@@ -254,7 +267,7 @@ export function useNowPlaying(
   }, [session, paused, rate]);
 
   React.useEffect(() => {
-    if (!session || !durationMs) return;
+    if (!session || !durationMs || live) return;
     const tell = () => {
       const { positionMs } = playhead;
       const last = told.current;
@@ -272,7 +285,7 @@ export function useNowPlaying(
     };
     tell();
     return playhead.subscribe(tell);
-  }, [session, paused, playhead, durationMs, rate]);
+  }, [session, paused, playhead, durationMs, rate, live]);
 
   return act;
 }

@@ -142,6 +142,8 @@ export interface QueuedItem {
 }
 
 export interface PlayerOptions {
+  /** A broadcast has no file end, resume position, or thumbnail index. */
+  live?: boolean;
   client: JellyfinClient;
   item: BaseItemDto;
   source: SourceInfo;

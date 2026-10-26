@@ -425,6 +425,10 @@ msgstr "Add another language"
 msgid "Add catalogs to your configuration, then refresh."
 msgstr "Add catalogs to your configuration, then refresh."
 
+#: src/pages/live-tv.tsx
+msgid "Add favorite"
+msgstr "Add favorite"
+
 #: src/components/item-menu.tsx
 #: src/pages/item.tsx
 msgid "Add favourite"
@@ -624,6 +628,10 @@ msgstr "Audio description, narrating what is on screen"
 msgid "Audio languages"
 msgstr "Audio languages"
 
+#: src/pages/live-player.tsx
+msgid "Audio track"
+msgstr "Audio track"
+
 #: src/pages/settings/audio.tsx
 msgid "Audio types"
 msgstr "Audio types"
@@ -661,6 +669,10 @@ msgstr "Back"
 #: src/lib/input/keys.ts
 msgid "Back button"
 msgstr "Back button"
+
+#: src/pages/live-player.tsx
+msgid "Back to channels"
+msgstr "Back to channels"
 
 #: src/components/version-settings.tsx
 #: src/pages/settings/interface.tsx
@@ -750,6 +762,10 @@ msgstr "Browser Search"
 msgid "Browsing"
 msgstr "Browsing"
 
+#: src/pages/live-player.tsx
+msgid "Buffering…"
+msgstr "Buffering…"
+
 #: src/pages/settings/about.tsx
 msgid "Builds the mpv library this app ships with."
 msgstr "Builds the mpv library this app ships with."
@@ -804,6 +820,10 @@ msgstr "Can’t reach the server"
 msgid "Cancel"
 msgstr "Cancel"
 
+#: src/pages/live-tv.tsx
+msgid "Cancel recording"
+msgstr "Cancel recording"
+
 #: src/components/people.tsx
 msgid "Cast"
 msgstr "Cast"
@@ -850,9 +870,18 @@ msgstr "Change these on a phone, a computer or in a browser."
 msgid "Channel"
 msgstr "Channel"
 
+#: src/pages/live-tv.tsx
 #: src/pages/settings/audio.tsx
 msgid "Channels"
 msgstr "Channels"
+
+#: src/pages/live-tv.tsx
+msgid "Channels & guide"
+msgstr "Channels & guide"
+
+#: src/pages/live-tv.tsx
+msgid "Channels could not be loaded. Check your connection and try again."
+msgstr "Channels could not be loaded. Check your connection and try again."
 
 #: src/components/player/keys.ts
 #: src/components/player/options.tsx
@@ -871,6 +900,10 @@ msgstr "Chat"
 msgid "Check now"
 msgstr "Check now"
 
+#: src/pages/live-player.tsx
+msgid "Check your connection and Live TV permission. The tuner may also be in use."
+msgstr "Check your connection and Live TV permission. The tuner may also be in use."
+
 #: src/lib/hosts/shell/index.ts
 #: src/pages/settings/apps.tsx
 msgid "Checking…"
@@ -883,6 +916,11 @@ msgstr "Choose"
 #: src/lib/hosts/shell/index.ts
 msgid "Choose {name}"
 msgstr "Choose {name}"
+
+#: src/pages/live-player.tsx
+#: src/pages/live-tv.tsx
+msgid "Choose a channel"
+msgstr "Choose a channel"
 
 #: src/pages/servers.tsx
 msgid "Choose a server"
@@ -1216,6 +1254,10 @@ msgstr "Crop"
 #: src/lib/input/keys.ts
 msgid "Ctrl"
 msgstr "Ctrl"
+
+#: src/pages/live-tv.tsx
+msgid "Current program progress"
+msgstr "Current program progress"
 
 #: src/pages/settings/subtitles.tsx
 msgid "Cursive"
@@ -1600,6 +1642,14 @@ msgstr "Fast forward"
 msgid "Faster"
 msgstr "Faster"
 
+#: src/pages/live-tv.tsx
+msgid "Favorite"
+msgstr "Favorite"
+
+#: src/pages/live-tv.tsx
+msgid "Favorite channels"
+msgstr "Favorite channels"
+
 #: src/components/layout.tsx
 #: src/pages/favourites.tsx
 #: src/pages/settings/apps.tsx
@@ -1721,6 +1771,10 @@ msgstr "Full"
 msgid "Full screen"
 msgstr "Full screen"
 
+#: src/pages/live-player.tsx
+msgid "Fullscreen"
+msgstr "Fullscreen"
+
 #: src/lib/input/actions.ts
 msgid "General"
 msgstr "General"
@@ -1752,6 +1806,10 @@ msgstr "Group"
 #: src/pages/history.tsx
 msgid "Group by day"
 msgstr "Group by day"
+
+#: src/pages/live-tv.tsx
+msgid "Guide date"
+msgstr "Guide date"
 
 #: src/pages/settings/playback.tsx
 msgid "Hardware decoding"
@@ -2107,11 +2165,37 @@ msgstr "List only my languages"
 msgid "Listening…"
 msgstr "Listening…"
 
+#: src/pages/live-player.tsx
+msgid "Live"
+msgstr "Live"
+
+#: src/components/layout.tsx
+#: src/pages/live-tv.tsx
+msgid "Live TV"
+msgstr "Live TV"
+
+#: src/pages/live-tv.tsx
+msgid "Live TV is not available for this server or account."
+msgstr "Live TV is not available for this server or account."
+
+#: src/pages/live-tv.tsx
+msgid "Live TV sections"
+msgstr "Live TV sections"
+
 #: src/components/party/party-sheet.tsx
 msgid "Loading"
 msgstr "Loading"
 
+#: src/pages/live-tv.tsx
+msgid "Loading channels…"
+msgstr "Loading channels…"
+
+#: src/pages/live-tv.tsx
+msgid "Loading guide…"
+msgstr "Loading guide…"
+
 #: src/components/version-settings.tsx
+#: src/pages/live-tv.tsx
 msgid "Loading…"
 msgstr "Loading…"
 
@@ -2305,6 +2389,7 @@ msgstr "mpv.conf, input.conf, scripts and shaders in this folder apply to the bu
 
 #: src/components/player/volume.tsx
 #: src/lib/input/actions.ts
+#: src/pages/live-player.tsx
 msgid "Mute"
 msgstr "Mute"
 
@@ -2351,9 +2436,17 @@ msgstr "Next"
 msgid "Next audio track"
 msgstr "Next audio track"
 
+#: src/pages/live-player.tsx
+msgid "Next channel"
+msgstr "Next channel"
+
 #: src/lib/input/actions.ts
 msgid "Next chapter"
 msgstr "Next chapter"
+
+#: src/pages/live-tv.tsx
+msgid "Next day"
+msgstr "Next day"
 
 #: src/components/player/controls.tsx
 #: src/components/player/next-episode.tsx
@@ -2413,9 +2506,21 @@ msgstr "No badges match."
 msgid "No catalogs yet"
 msgstr "No catalogs yet"
 
+#: src/pages/live-tv.tsx
+msgid "No channels are available. Check Live TV in your Jellyfin server."
+msgstr "No channels are available. Check Live TV in your Jellyfin server."
+
+#: src/pages/live-tv.tsx
+msgid "No channels match your search or filter."
+msgstr "No channels match your search or filter."
+
 #: src/components/download-button.tsx
 msgid "No episodes to download there"
 msgstr "No episodes to download there"
+
+#: src/pages/live-tv.tsx
+msgid "No guide data for this day. You can still watch the channel."
+msgstr "No guide data for this day. You can still watch the channel."
 
 #: src/pages/settings/cache.tsx
 msgid "No limit"
@@ -2444,6 +2549,14 @@ msgstr "No playable version was found"
 #: src/components/playlists.tsx
 msgid "No playlists yet. Make one here, or add a title to one from its menu."
 msgstr "No playlists yet. Make one here, or add a title to one from its menu."
+
+#: src/pages/live-tv.tsx
+msgid "No recordings are scheduled."
+msgstr "No recordings are scheduled."
+
+#: src/pages/live-tv.tsx
+msgid "No recordings yet."
+msgstr "No recordings yet."
 
 #: src/lib/servers.ts
 msgid "No server answered at that address."
@@ -2593,6 +2706,7 @@ msgstr "Ocean"
 #: src/components/player/options.tsx
 #: src/components/remote-sheet.tsx
 #: src/lib/playback/sound.ts
+#: src/pages/live-player.tsx
 #: src/pages/settings/audio.tsx
 #: src/pages/settings/subtitles.tsx
 msgid "Off"
@@ -2613,6 +2727,10 @@ msgstr "Older ones wait for the server instead. Without a connection, everything
 #: src/components/party/party-sheet.tsx
 msgid "on {relay}"
 msgstr "on {relay}"
+
+#: src/pages/live-tv.tsx
+msgid "On now"
+msgstr "On now"
 
 #: src/lib/discord.ts
 msgid "On the calendar"
@@ -2708,6 +2826,10 @@ msgstr "Open playlist"
 #: src/pages/downloads.tsx
 msgid "Open the app's downloads"
 msgstr "Open the app's downloads"
+
+#: src/pages/live-player.tsx
+msgid "Opening live channel…"
+msgstr "Opening live channel…"
 
 #: src/lib/input/actions.ts
 msgid "Opens the menu of what is selected, as a right click does."
@@ -2867,6 +2989,7 @@ msgstr "Pattern"
 #: src/lib/input/actions.ts
 #: src/lib/input/keys.ts
 #: src/pages/downloads.tsx
+#: src/pages/live-player.tsx
 msgid "Pause"
 msgstr "Pause"
 
@@ -2971,6 +3094,7 @@ msgstr "Pink"
 #: src/lib/input/actions.ts
 #: src/lib/input/keys.ts
 #: src/pages/item.tsx
+#: src/pages/live-player.tsx
 msgid "Play"
 msgstr "Play"
 
@@ -3172,9 +3296,17 @@ msgstr "Previews"
 msgid "Previous"
 msgstr "Previous"
 
+#: src/pages/live-player.tsx
+msgid "Previous channel"
+msgstr "Previous channel"
+
 #: src/lib/input/actions.ts
 msgid "Previous chapter"
 msgstr "Previous chapter"
+
+#: src/pages/live-tv.tsx
+msgid "Previous day"
+msgstr "Previous day"
 
 #: src/components/player/controls.tsx
 #: src/lib/input/actions.ts
@@ -3197,6 +3329,14 @@ msgstr "Previous trailer"
 #: src/components/people.tsx
 msgid "Producer"
 msgstr "Producer"
+
+#: src/pages/live-tv.tsx
+msgid "Program guide"
+msgstr "Program guide"
+
+#: src/pages/live-tv.tsx
+msgid "Program information unavailable"
+msgstr "Program information unavailable"
 
 #: src/components/shortcut-settings.tsx
 msgid "Puts every key back the way it came."
@@ -3279,19 +3419,45 @@ msgstr "Recaps"
 msgid "Recent searches"
 msgstr "Recent searches"
 
+#: src/pages/live-player.tsx
+msgid "Reconnect"
+msgstr "Reconnect"
+
+#: src/pages/live-player.tsx
+msgid "Reconnect to return to the live broadcast."
+msgstr "Reconnect to return to the live broadcast."
+
 #: src/components/party/party-layer.tsx
 msgid "Reconnecting to the party…"
 msgstr "Reconnecting to the party…"
 
 #: src/components/layout.tsx
+#: src/pages/live-player.tsx
 msgid "Reconnecting…"
 msgstr "Reconnecting…"
+
+#: src/pages/live-tv.tsx
+msgid "Record"
+msgstr "Record"
+
+#: src/pages/live-tv.tsx
+msgid "Recording scheduled"
+msgstr "Recording scheduled"
+
+#: src/pages/live-tv.tsx
+msgid "Recordings"
+msgstr "Recordings"
+
+#: src/pages/live-tv.tsx
+msgid "Recordings could not be loaded."
+msgstr "Recordings could not be loaded."
 
 #: src/lib/i18n.ts
 msgid "Red"
 msgstr "Red"
 
 #: src/components/no-catalogs.tsx
+#: src/pages/live-tv.tsx
 msgid "Refresh"
 msgstr "Refresh"
 
@@ -3338,6 +3504,10 @@ msgstr "Remove {targetName} from this device? You will need to add it and sign i
 #: src/pages/search.tsx
 msgid "Remove {term}"
 msgstr "Remove {term}"
+
+#: src/pages/live-tv.tsx
+msgid "Remove favorite"
+msgstr "Remove favorite"
 
 #: src/components/item-menu.tsx
 #: src/pages/item.tsx
@@ -3466,6 +3636,10 @@ msgstr "Retimed and synced automatically"
 msgid "Retry"
 msgstr "Retry"
 
+#: src/pages/live-player.tsx
+msgid "Return to live"
+msgstr "Return to live"
+
 #: src/components/remote-sheet.tsx
 #: src/lib/input/keys.ts
 msgid "Rewind"
@@ -3570,6 +3744,14 @@ msgstr "Saw"
 msgid "Saw its subtitle"
 msgstr "Saw its subtitle"
 
+#: src/pages/live-tv.tsx
+msgid "Scheduled recordings"
+msgstr "Scheduled recordings"
+
+#: src/pages/live-tv.tsx
+msgid "Scheduled recordings could not be loaded."
+msgstr "Scheduled recordings could not be loaded."
+
 #: src/pages/settings/subtitles.tsx
 msgid "SDH, with sounds described"
 msgstr "SDH, with sounds described"
@@ -3590,6 +3772,10 @@ msgstr "Search again"
 #: src/pages/search.tsx
 msgid "Search by voice"
 msgstr "Search by voice"
+
+#: src/pages/live-tv.tsx
+msgid "Search channels"
+msgstr "Search channels"
 
 #: src/components/player/subtitle-sync.tsx
 msgid "Search the lines"
@@ -3624,6 +3810,10 @@ msgstr "Select"
 #: src/pages/history.tsx
 msgid "Select all"
 msgstr "Select all"
+
+#: src/pages/live-tv.tsx
+msgid "Selected channel"
+msgstr "Selected channel"
 
 #: src/components/party/party-sheet.tsx
 #: src/components/send-report.tsx
@@ -4077,6 +4267,7 @@ msgstr "Subtitle types"
 
 #: src/components/player/options.tsx
 #: src/components/remote-sheet.tsx
+#: src/pages/live-player.tsx
 #: src/pages/settings/index.tsx
 #: src/pages/settings/subtitles.tsx
 msgid "Subtitles"
@@ -4338,6 +4529,10 @@ msgstr "The app's player"
 msgid "The app's player and its options, such as starting videos in landscape."
 msgstr "The app's player and its options, such as starting videos in landscape."
 
+#: src/pages/live-tv.tsx
+msgid "The change could not be saved. Try again."
+msgstr "The change could not be saved. Try again."
+
 #: src/lib/party/party.ts
 msgid "The host removed you from the party."
 msgstr "The host removed you from the party."
@@ -4361,6 +4556,14 @@ msgstr "The link may be old, or the page moved."
 #: src/lib/hosts/shell/player.ts
 msgid "the link returned something other than a video"
 msgstr "the link returned something other than a video"
+
+#: src/pages/live-player.tsx
+msgid "The live channel could not be opened."
+msgstr "The live channel could not be opened."
+
+#: src/pages/live-player.tsx
+msgid "The live stream was interrupted."
+msgstr "The live stream was interrupted."
 
 #: src/pages/settings/apps.tsx
 msgid "The movie or show whose page is open."
@@ -4405,6 +4608,10 @@ msgstr "The player's subtitle menu lists subtitles in your languages, ones witho
 #: src/components/playlists.tsx
 msgid "The playlist goes; the titles in it stay."
 msgstr "The playlist goes; the titles in it stay."
+
+#: src/pages/live-tv.tsx
+msgid "The program guide could not be loaded. You can still watch the channel."
+msgstr "The program guide could not be loaded. You can still watch the channel."
 
 #: src/lib/party/party.ts
 msgid "The relay could not read that."
@@ -4655,9 +4862,15 @@ msgstr "Troubleshooting"
 #: src/components/random-pick.tsx
 #: src/components/version-picker.tsx
 #: src/pages/downloads.tsx
+#: src/pages/live-player.tsx
+#: src/pages/live-tv.tsx
 #: src/pages/sign-in.tsx
 msgid "Try again"
 msgstr "Try again"
+
+#: src/pages/live-player.tsx
+msgid "Try server transcoding"
+msgstr "Try server transcoding"
 
 #: src/lib/party/party.ts
 msgid "Try starting the party again."
@@ -4708,6 +4921,7 @@ msgid "Unfinished"
 msgstr "Unfinished"
 
 #: src/components/player/volume.tsx
+#: src/pages/live-player.tsx
 msgid "Unmute"
 msgstr "Unmute"
 
@@ -4882,6 +5096,7 @@ msgid "Voice search failed"
 msgstr "Voice search failed"
 
 #: src/components/player/volume.tsx
+#: src/pages/live-player.tsx
 msgid "Volume"
 msgstr "Volume"
 
@@ -4933,6 +5148,10 @@ msgstr "Watch along"
 #: src/pages/settings/account.tsx
 msgid "Watch as someone else on this configuration. A user with a PIN needs it again after switching away."
 msgstr "Watch as someone else on this configuration. A user with a PIN needs it again after switching away."
+
+#: src/pages/live-tv.tsx
+msgid "Watch live"
+msgstr "Watch live"
 
 #: src/pages/settings/playback.tsx
 msgid "Watch parties"
@@ -5156,6 +5375,10 @@ msgstr "You left the party."
 #: src/pages/settings/playback.tsx
 msgid "Your {name}"
 msgstr "Your {name}"
+
+#: src/pages/live-tv.tsx
+msgid "Your account does not have permission to watch Live TV."
+msgstr "Your account does not have permission to watch Live TV."
 
 #: src/components/version-settings.tsx
 msgid "Your badges"

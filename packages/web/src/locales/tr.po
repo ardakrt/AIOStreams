@@ -425,6 +425,10 @@ msgstr "Başka dil ekle"
 msgid "Add catalogs to your configuration, then refresh."
 msgstr "Yapılandırmana katalog ekleyip yenile."
 
+#: src/pages/live-tv.tsx
+msgid "Add favorite"
+msgstr "Favorilere ekle"
+
 #: src/components/item-menu.tsx
 #: src/pages/item.tsx
 msgid "Add favourite"
@@ -624,6 +628,10 @@ msgstr "Ekrandakileri anlatan sesli betimleme"
 msgid "Audio languages"
 msgstr "Ses dilleri"
 
+#: src/pages/live-player.tsx
+msgid "Audio track"
+msgstr "Ses parçası"
+
 #: src/pages/settings/audio.tsx
 msgid "Audio types"
 msgstr "Ses türleri"
@@ -661,6 +669,10 @@ msgstr "Geri"
 #: src/lib/input/keys.ts
 msgid "Back button"
 msgstr "Geri düğmesi"
+
+#: src/pages/live-player.tsx
+msgid "Back to channels"
+msgstr "Kanallara dön"
 
 #: src/components/version-settings.tsx
 #: src/pages/settings/interface.tsx
@@ -750,6 +762,10 @@ msgstr "Tarayıcı araması"
 msgid "Browsing"
 msgstr "Geziniyor"
 
+#: src/pages/live-player.tsx
+msgid "Buffering…"
+msgstr "Arabelleğe alınıyor…"
+
 #: src/pages/settings/about.tsx
 msgid "Builds the mpv library this app ships with."
 msgstr "Bu uygulamayla gelen mpv kitaplığını derler."
@@ -804,6 +820,10 @@ msgstr "Sunucuya ulaşılamıyor"
 msgid "Cancel"
 msgstr "İptal"
 
+#: src/pages/live-tv.tsx
+msgid "Cancel recording"
+msgstr "Kaydı iptal et"
+
 #: src/components/people.tsx
 msgid "Cast"
 msgstr "Oyuncular"
@@ -850,9 +870,18 @@ msgstr "Bunları telefonda, bilgisayarda veya tarayıcıda değiştir."
 msgid "Channel"
 msgstr "Kanal"
 
+#: src/pages/live-tv.tsx
 #: src/pages/settings/audio.tsx
 msgid "Channels"
 msgstr "Kanallar"
+
+#: src/pages/live-tv.tsx
+msgid "Channels & guide"
+msgstr "Kanallar ve yayın akışı"
+
+#: src/pages/live-tv.tsx
+msgid "Channels could not be loaded. Check your connection and try again."
+msgstr "Kanallar yüklenemedi. Bağlantını kontrol edip tekrar dene."
 
 #: src/components/player/keys.ts
 #: src/components/player/options.tsx
@@ -871,6 +900,10 @@ msgstr "Sohbet"
 msgid "Check now"
 msgstr "Şimdi kontrol et"
 
+#: src/pages/live-player.tsx
+msgid "Check your connection and Live TV permission. The tuner may also be in use."
+msgstr "Bağlantını ve canlı TV iznini kontrol et. Yayın kaynağı başka bir oturum tarafından kullanılıyor olabilir."
+
 #: src/lib/hosts/shell/index.ts
 #: src/pages/settings/apps.tsx
 msgid "Checking…"
@@ -883,6 +916,11 @@ msgstr "Seç"
 #: src/lib/hosts/shell/index.ts
 msgid "Choose {name}"
 msgstr "{name} konumunu seç"
+
+#: src/pages/live-player.tsx
+#: src/pages/live-tv.tsx
+msgid "Choose a channel"
+msgstr "Kanal seç"
 
 #: src/pages/servers.tsx
 msgid "Choose a server"
@@ -1216,6 +1254,10 @@ msgstr "Kırp"
 #: src/lib/input/keys.ts
 msgid "Ctrl"
 msgstr "Ctrl"
+
+#: src/pages/live-tv.tsx
+msgid "Current program progress"
+msgstr "Mevcut programın ilerlemesi"
 
 #: src/pages/settings/subtitles.tsx
 msgid "Cursive"
@@ -1600,6 +1642,14 @@ msgstr "İleri sar"
 msgid "Faster"
 msgstr "Hızlandır"
 
+#: src/pages/live-tv.tsx
+msgid "Favorite"
+msgstr "Favori"
+
+#: src/pages/live-tv.tsx
+msgid "Favorite channels"
+msgstr "Favori kanallar"
+
 #: src/components/layout.tsx
 #: src/pages/favourites.tsx
 #: src/pages/settings/apps.tsx
@@ -1721,6 +1771,10 @@ msgstr "Tam"
 msgid "Full screen"
 msgstr "Tam ekran"
 
+#: src/pages/live-player.tsx
+msgid "Fullscreen"
+msgstr "Tam ekran"
+
 #: src/lib/input/actions.ts
 msgid "General"
 msgstr "Genel"
@@ -1752,6 +1806,10 @@ msgstr "Grup"
 #: src/pages/history.tsx
 msgid "Group by day"
 msgstr "Güne göre grupla"
+
+#: src/pages/live-tv.tsx
+msgid "Guide date"
+msgstr "Yayın akışı tarihi"
 
 #: src/pages/settings/playback.tsx
 msgid "Hardware decoding"
@@ -2107,11 +2165,37 @@ msgstr "Yalnızca dillerimi listele"
 msgid "Listening…"
 msgstr "Dinleniyor…"
 
+#: src/pages/live-player.tsx
+msgid "Live"
+msgstr "Canlı"
+
+#: src/components/layout.tsx
+#: src/pages/live-tv.tsx
+msgid "Live TV"
+msgstr "Canlı TV"
+
+#: src/pages/live-tv.tsx
+msgid "Live TV is not available for this server or account."
+msgstr "Bu sunucuda veya hesapta canlı TV kullanılamıyor."
+
+#: src/pages/live-tv.tsx
+msgid "Live TV sections"
+msgstr "Canlı TV bölümleri"
+
 #: src/components/party/party-sheet.tsx
 msgid "Loading"
 msgstr "Yükleniyor"
 
+#: src/pages/live-tv.tsx
+msgid "Loading channels…"
+msgstr "Kanallar yükleniyor…"
+
+#: src/pages/live-tv.tsx
+msgid "Loading guide…"
+msgstr "Yayın akışı yükleniyor…"
+
 #: src/components/version-settings.tsx
+#: src/pages/live-tv.tsx
 msgid "Loading…"
 msgstr "Yükleniyor…"
 
@@ -2305,6 +2389,7 @@ msgstr "Bu klasördeki mpv.conf, input.conf, betikler ve shader'lar yerleşik mp
 
 #: src/components/player/volume.tsx
 #: src/lib/input/actions.ts
+#: src/pages/live-player.tsx
 msgid "Mute"
 msgstr "Sesi kapat"
 
@@ -2351,9 +2436,17 @@ msgstr "İleri"
 msgid "Next audio track"
 msgstr "Sonraki ses parçası"
 
+#: src/pages/live-player.tsx
+msgid "Next channel"
+msgstr "Sonraki kanal"
+
 #: src/lib/input/actions.ts
 msgid "Next chapter"
 msgstr "Sonraki sahne"
+
+#: src/pages/live-tv.tsx
+msgid "Next day"
+msgstr "Sonraki gün"
 
 #: src/components/player/controls.tsx
 #: src/components/player/next-episode.tsx
@@ -2413,9 +2506,21 @@ msgstr "Eşleşen rozet yok."
 msgid "No catalogs yet"
 msgstr "Henüz katalog yok"
 
+#: src/pages/live-tv.tsx
+msgid "No channels are available. Check Live TV in your Jellyfin server."
+msgstr "Kullanılabilir kanal yok. Jellyfin sunucundaki canlı TV ayarlarını kontrol et."
+
+#: src/pages/live-tv.tsx
+msgid "No channels match your search or filter."
+msgstr "Aramana veya filtrene uygun kanal bulunamadı."
+
 #: src/components/download-button.tsx
 msgid "No episodes to download there"
 msgstr "Burada indirilecek bölüm yok"
+
+#: src/pages/live-tv.tsx
+msgid "No guide data for this day. You can still watch the channel."
+msgstr "Bu güne ait yayın akışı bilgisi yok. Kanalı yine de izleyebilirsin."
 
 #: src/pages/settings/cache.tsx
 msgid "No limit"
@@ -2444,6 +2549,14 @@ msgstr "Oynatılabilir sürüm bulunamadı"
 #: src/components/playlists.tsx
 msgid "No playlists yet. Make one here, or add a title to one from its menu."
 msgstr "Henüz oynatma listesi yok. Buradan oluştur veya bir içeriği menüsünden listeye ekle."
+
+#: src/pages/live-tv.tsx
+msgid "No recordings are scheduled."
+msgstr "Planlanmış kayıt yok."
+
+#: src/pages/live-tv.tsx
+msgid "No recordings yet."
+msgstr "Henüz kayıt yok."
 
 #: src/lib/servers.ts
 msgid "No server answered at that address."
@@ -2593,6 +2706,7 @@ msgstr "Okyanus"
 #: src/components/player/options.tsx
 #: src/components/remote-sheet.tsx
 #: src/lib/playback/sound.ts
+#: src/pages/live-player.tsx
 #: src/pages/settings/audio.tsx
 #: src/pages/settings/subtitles.tsx
 msgid "Off"
@@ -2613,6 +2727,10 @@ msgstr "Daha eski içerikler için sunucunun yanıtı beklenir. Bağlantı yoksa
 #: src/components/party/party-sheet.tsx
 msgid "on {relay}"
 msgstr "{relay} üzerinde"
+
+#: src/pages/live-tv.tsx
+msgid "On now"
+msgstr "Şu anda yayında"
 
 #: src/lib/discord.ts
 msgid "On the calendar"
@@ -2708,6 +2826,10 @@ msgstr "Oynatma listesini aç"
 #: src/pages/downloads.tsx
 msgid "Open the app's downloads"
 msgstr "Uygulamanın indirmelerini aç"
+
+#: src/pages/live-player.tsx
+msgid "Opening live channel…"
+msgstr "Canlı yayın açılıyor…"
 
 #: src/lib/input/actions.ts
 msgid "Opens the menu of what is selected, as a right click does."
@@ -2867,6 +2989,7 @@ msgstr "Desen"
 #: src/lib/input/actions.ts
 #: src/lib/input/keys.ts
 #: src/pages/downloads.tsx
+#: src/pages/live-player.tsx
 msgid "Pause"
 msgstr "Duraklat"
 
@@ -2971,6 +3094,7 @@ msgstr "Pembe"
 #: src/lib/input/actions.ts
 #: src/lib/input/keys.ts
 #: src/pages/item.tsx
+#: src/pages/live-player.tsx
 msgid "Play"
 msgstr "Oynat"
 
@@ -3172,9 +3296,17 @@ msgstr "Önizlemeler"
 msgid "Previous"
 msgstr "Önceki"
 
+#: src/pages/live-player.tsx
+msgid "Previous channel"
+msgstr "Önceki kanal"
+
 #: src/lib/input/actions.ts
 msgid "Previous chapter"
 msgstr "Önceki sahne"
+
+#: src/pages/live-tv.tsx
+msgid "Previous day"
+msgstr "Önceki gün"
 
 #: src/components/player/controls.tsx
 #: src/lib/input/actions.ts
@@ -3197,6 +3329,14 @@ msgstr "Önceki fragman"
 #: src/components/people.tsx
 msgid "Producer"
 msgstr "Yapımcı"
+
+#: src/pages/live-tv.tsx
+msgid "Program guide"
+msgstr "Yayın akışı"
+
+#: src/pages/live-tv.tsx
+msgid "Program information unavailable"
+msgstr "Program bilgisi bulunmuyor"
 
 #: src/components/shortcut-settings.tsx
 msgid "Puts every key back the way it came."
@@ -3279,19 +3419,45 @@ msgstr "Özetler"
 msgid "Recent searches"
 msgstr "Son aramalar"
 
+#: src/pages/live-player.tsx
+msgid "Reconnect"
+msgstr "Yeniden bağlan"
+
+#: src/pages/live-player.tsx
+msgid "Reconnect to return to the live broadcast."
+msgstr "Canlı yayına dönmek için yeniden bağlan."
+
 #: src/components/party/party-layer.tsx
 msgid "Reconnecting to the party…"
 msgstr "Birlikte izlemeye yeniden bağlanılıyor…"
 
 #: src/components/layout.tsx
+#: src/pages/live-player.tsx
 msgid "Reconnecting…"
 msgstr "Yeniden bağlanılıyor…"
+
+#: src/pages/live-tv.tsx
+msgid "Record"
+msgstr "Kaydet"
+
+#: src/pages/live-tv.tsx
+msgid "Recording scheduled"
+msgstr "Kayıt planlandı"
+
+#: src/pages/live-tv.tsx
+msgid "Recordings"
+msgstr "Kayıtlar"
+
+#: src/pages/live-tv.tsx
+msgid "Recordings could not be loaded."
+msgstr "Kayıtlar yüklenemedi."
 
 #: src/lib/i18n.ts
 msgid "Red"
 msgstr "Kırmızı"
 
 #: src/components/no-catalogs.tsx
+#: src/pages/live-tv.tsx
 msgid "Refresh"
 msgstr "Yenile"
 
@@ -3338,6 +3504,10 @@ msgstr "{targetName} bu cihazdan kaldırılsın mı? Yeniden ekleyip oturum açm
 #: src/pages/search.tsx
 msgid "Remove {term}"
 msgstr "{term} aramasını kaldır"
+
+#: src/pages/live-tv.tsx
+msgid "Remove favorite"
+msgstr "Favorilerden çıkar"
 
 #: src/components/item-menu.tsx
 #: src/pages/item.tsx
@@ -3466,6 +3636,10 @@ msgstr "Zamanlaması düzeltildi ve otomatik eşitlendi"
 msgid "Retry"
 msgstr "Yeniden dene"
 
+#: src/pages/live-player.tsx
+msgid "Return to live"
+msgstr "Canlı yayına dön"
+
 #: src/components/remote-sheet.tsx
 #: src/lib/input/keys.ts
 msgid "Rewind"
@@ -3570,6 +3744,14 @@ msgstr "Gördüm"
 msgid "Saw its subtitle"
 msgstr "Altyazısını gördüm"
 
+#: src/pages/live-tv.tsx
+msgid "Scheduled recordings"
+msgstr "Planlanmış kayıtlar"
+
+#: src/pages/live-tv.tsx
+msgid "Scheduled recordings could not be loaded."
+msgstr "Planlanmış kayıtlar yüklenemedi."
+
 #: src/pages/settings/subtitles.tsx
 msgid "SDH, with sounds described"
 msgstr "SDH, sesleri betimleyen altyazı"
@@ -3590,6 +3772,10 @@ msgstr "Yeniden ara"
 #: src/pages/search.tsx
 msgid "Search by voice"
 msgstr "Sesle ara"
+
+#: src/pages/live-tv.tsx
+msgid "Search channels"
+msgstr "Kanal ara"
 
 #: src/components/player/subtitle-sync.tsx
 msgid "Search the lines"
@@ -3624,6 +3810,10 @@ msgstr "Seç"
 #: src/pages/history.tsx
 msgid "Select all"
 msgstr "Tümünü seç"
+
+#: src/pages/live-tv.tsx
+msgid "Selected channel"
+msgstr "Seçili kanal"
 
 #: src/components/party/party-sheet.tsx
 #: src/components/send-report.tsx
@@ -4077,6 +4267,7 @@ msgstr "Altyazı türleri"
 
 #: src/components/player/options.tsx
 #: src/components/remote-sheet.tsx
+#: src/pages/live-player.tsx
 #: src/pages/settings/index.tsx
 #: src/pages/settings/subtitles.tsx
 msgid "Subtitles"
@@ -4338,6 +4529,10 @@ msgstr "Uygulamanın oynatıcısı"
 msgid "The app's player and its options, such as starting videos in landscape."
 msgstr "Uygulamanın oynatıcısı ve videoları yatay başlatma gibi seçenekleri."
 
+#: src/pages/live-tv.tsx
+msgid "The change could not be saved. Try again."
+msgstr "Değişiklik kaydedilemedi. Tekrar dene."
+
 #: src/lib/party/party.ts
 msgid "The host removed you from the party."
 msgstr "Ev sahibi seni birlikte izlemeden çıkardı."
@@ -4361,6 +4556,14 @@ msgstr "Bağlantı eski olabilir veya sayfa taşınmış olabilir."
 #: src/lib/hosts/shell/player.ts
 msgid "the link returned something other than a video"
 msgstr "bağlantı video dışında bir içerik döndürdü"
+
+#: src/pages/live-player.tsx
+msgid "The live channel could not be opened."
+msgstr "Canlı kanal açılamadı."
+
+#: src/pages/live-player.tsx
+msgid "The live stream was interrupted."
+msgstr "Canlı yayın kesildi."
 
 #: src/pages/settings/apps.tsx
 msgid "The movie or show whose page is open."
@@ -4405,6 +4608,10 @@ msgstr "Oynatıcının altyazı menüsünde tercih ettiğin dillerdeki altyazıl
 #: src/components/playlists.tsx
 msgid "The playlist goes; the titles in it stay."
 msgstr "Oynatma listesi silinir; içindeki içerikler kalır."
+
+#: src/pages/live-tv.tsx
+msgid "The program guide could not be loaded. You can still watch the channel."
+msgstr "Yayın akışı yüklenemedi. Kanalı yine de izleyebilirsin."
 
 #: src/lib/party/party.ts
 msgid "The relay could not read that."
@@ -4655,9 +4862,15 @@ msgstr "Sorun giderme"
 #: src/components/random-pick.tsx
 #: src/components/version-picker.tsx
 #: src/pages/downloads.tsx
+#: src/pages/live-player.tsx
+#: src/pages/live-tv.tsx
 #: src/pages/sign-in.tsx
 msgid "Try again"
 msgstr "Yeniden dene"
+
+#: src/pages/live-player.tsx
+msgid "Try server transcoding"
+msgstr "Sunucuda dönüştürerek dene"
 
 #: src/lib/party/party.ts
 msgid "Try starting the party again."
@@ -4708,6 +4921,7 @@ msgid "Unfinished"
 msgstr "Yarım kalanlar"
 
 #: src/components/player/volume.tsx
+#: src/pages/live-player.tsx
 msgid "Unmute"
 msgstr "Sesi aç"
 
@@ -4882,6 +5096,7 @@ msgid "Voice search failed"
 msgstr "Sesli arama başarısız"
 
 #: src/components/player/volume.tsx
+#: src/pages/live-player.tsx
 msgid "Volume"
 msgstr "Ses düzeyi"
 
@@ -4933,6 +5148,10 @@ msgstr "Birlikte izle"
 #: src/pages/settings/account.tsx
 msgid "Watch as someone else on this configuration. A user with a PIN needs it again after switching away."
 msgstr "Bu yapılandırmadaki başka bir kullanıcı olarak izle. PIN'i olan kullanıcıdan, başka kullanıcıya geçildikten sonra yeniden PIN istenir."
+
+#: src/pages/live-tv.tsx
+msgid "Watch live"
+msgstr "Canlı izle"
 
 #: src/pages/settings/playback.tsx
 msgid "Watch parties"
@@ -5156,6 +5375,10 @@ msgstr "Birlikte izlemeden ayrıldın."
 #: src/pages/settings/playback.tsx
 msgid "Your {name}"
 msgstr "Kendi {name} uygulaman"
+
+#: src/pages/live-tv.tsx
+msgid "Your account does not have permission to watch Live TV."
+msgstr "Hesabının canlı TV izleme izni yok."
 
 #: src/components/version-settings.tsx
 msgid "Your badges"

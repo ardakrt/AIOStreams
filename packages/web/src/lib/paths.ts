@@ -8,6 +8,9 @@ import type { BaseItemDto } from './types';
 
 export const to = {
   home: '/',
+  liveTv: '/live-tv',
+  livePlay: (channelId: string) =>
+    `/play/live/${encodeURIComponent(channelId)}`,
   history: '/history',
   downloads: '/downloads',
   calendar: (month?: string) =>

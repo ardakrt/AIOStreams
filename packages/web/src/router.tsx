@@ -20,6 +20,8 @@ import { PersonPage } from './pages/person';
 import { HistoryPage } from './pages/history';
 import { DownloadsPage } from './pages/downloads';
 import { PlayerPage } from './pages/player';
+import { LiveTvPage } from './pages/live-tv';
+import { LivePlayerPage } from './pages/live-player';
 import { TrailerPage } from './pages/trailer';
 import { Button } from '@aiostreams/ui/button';
 import { LuffyError } from '@aiostreams/ui/shared/luffy-error';
@@ -44,6 +46,20 @@ const historyRoute = createRoute({
   getParentRoute: () => shellRoute,
   path: '/history',
   component: HistoryPage,
+});
+
+const liveTvRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/live-tv',
+  component: LiveTvPage,
+});
+
+const livePlayRoute = createRoute({
+  getParentRoute: () => shellRoute,
+  path: '/play/live/$channelId',
+  component: () => (
+    <LivePlayerPage channelId={livePlayRoute.useParams().channelId} />
+  ),
 });
 
 const downloadsRoute = createRoute({
@@ -233,6 +249,8 @@ function PlayRouteView(): React.ReactElement {
 const routeTree = rootRoute.addChildren([
   shellRoute.addChildren([
     homeRoute,
+    liveTvRoute,
+    livePlayRoute,
     historyRoute,
     downloadsRoute,
     favouritesRoute,

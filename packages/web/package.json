@@ -12,7 +12,8 @@
     "preview": "rsbuild preview",
     "lint": "eslint src",
     "i18n:extract": "lingui extract --clean && lingui extract-template",
-    "test:i18n:tr": "node --test test/turkish.test.mjs"
+    "test:i18n:tr": "node --test test/turkish.test.mjs",
+    "test:live-tv": "node --test test/live-tv.test.mjs"
   },
   "browserslist": [
     "chrome >= 94",

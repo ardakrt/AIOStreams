@@ -21,6 +21,7 @@ import {
   BiCog,
   BiSearch,
   BiTransferAlt,
+  BiTv,
   BiWifiOff,
   BiX,
 } from 'react-icons/bi';
@@ -54,6 +55,7 @@ import { pageRtl } from '../lib/direction';
 import { shellHost } from '../lib/hosts/shell';
 import { serverAddress } from '../lib/servers';
 import { useServerInfo } from '../lib/server-info';
+import { useLiveTvAllowed } from '../lib/live-tv/queries';
 import { useDiscordBrowsing } from '../lib/discord';
 import { useServerEvents } from '../lib/server-events';
 import { retryNow, useReachable } from '../lib/connection';
@@ -461,6 +463,7 @@ function Unreachable() {
 }
 
 export function WebLayout() {
+  const liveTvAllowed = useLiveTvAllowed();
   const { switchUser } = useSession();
   const users = usePickableUsers();
   const several = (users.data?.length ?? 0) > 1;
@@ -522,6 +525,15 @@ export function WebLayout() {
     onClick: () => navigate(to.calendar()),
   };
   const inParty = !!useParty();
+  const liveTv: SidebarItem | null = liveTvAllowed
+    ? {
+        id: 'live-tv',
+        name: t`Live TV`,
+        iconType: BiTv,
+        isCurrent: pathname.startsWith('/live-tv'),
+        onClick: () => navigate(to.liveTv),
+      }
+    : null;
   const together: SidebarItem = {
     id: 'party',
     name: inParty ? t`Watch party` : t`Watch together`,
@@ -567,6 +579,7 @@ export function WebLayout() {
       isCurrent: pathname.startsWith('/favourites'),
       onClick: () => navigate(to.favourites()),
     },
+    ...(liveTv ? [liveTv] : []),
     calendar,
     activity,
     ...(playlists ? [playlists] : []),
