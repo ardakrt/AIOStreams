@@ -43,6 +43,38 @@ function fake(respond) {
   return { client, calls };
 }
 
+const presentationCode = ts.transpileModule(
+  readFileSync(
+    new URL('../src/lib/live-tv/presentation.ts', import.meta.url),
+    'utf8'
+  ),
+  {
+    compilerOptions: {
+      target: ts.ScriptTarget.ES2022,
+      module: ts.ModuleKind.ESNext,
+    },
+  }
+).outputText;
+const { channelSearch, channelLabel, programOnNow, programRemaining } =
+  await import(
+    `data:text/javascript;base64,${Buffer.from(presentationCode).toString('base64')}`
+  );
+
+test('channel search tolerates Turkish accents, spacing and punctuation', () => {
+  assert.equal(channelSearch('TRT 1 HD'), channelSearch('trt1hd'));
+  assert.equal(channelSearch('İŞIK TV [720p]'), channelSearch('isik tv720p'));
+  assert.equal(channelSearch('M SPORTS 1 HD'), 'msports1hd');
+});
+
+test('channel quality stays distinct and malformed guide times never produce a fake live state', () => {
+  assert.deepEqual(channelLabel({ Name: 'M SPORTS 1 HD [720p]' }), {
+    title: 'M SPORTS 1',
+    quality: ['HD', '720p'],
+  });
+  assert.equal(programOnNow({}, Date.now()), false);
+  assert.equal(programRemaining({}, Date.now()), 0);
+});
+
 test('all channels are fetched even when the server caps each page below the requested limit', async () => {
   const { client, calls } = fake((_, __, { query }) => ({
     Items: Array.from(

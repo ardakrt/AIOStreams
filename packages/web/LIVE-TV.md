@@ -13,8 +13,10 @@ The standalone app adds `/live-tv` for a stock Jellyfin server when the account 
 
 ## Validation
 
+The program-led showcase keeps a compact channel rail alongside the selected broadcast, a bounded horizontal daily guide, last-channel restoration and accent/spacing-tolerant search. Quality labels are read from the server's channel names. Artwork is used only when supplied by Jellyfin; missing artwork uses the channel mark or a fitted typographic fallback. Empty program descriptions do not reserve poster-sized blank space. The guide is keyboard reachable and supports arrows and Home/End.
+
 Run `pnpm -F @aiostreams/web test:live-tv`, `test:i18n:tr`, `lint`, `typecheck` and `build:standalone`.
 
-The Windows native validation used a separate portable copy and device identity against an existing Jellyfin server: 589 channels, H.264 1080p/AAC playback, channel changes, reconnect, keyboard controls, favorite save/restore, guide loading, timer creation/cancellation and successful stream-close responses. No timer from validation was retained. Isolated browser fixtures additionally covered empty channels/recordings, permission failure, retry limits, late-open cleanup and 390px layout without horizontal overflow.
+The preceding Live TV integration's Windows native validation used a separate portable copy and device identity against an existing Jellyfin server: 589 channels, H.264 1080p/AAC playback, channel changes, reconnect, keyboard controls, favorite save/restore, guide loading, timer creation/cancellation and successful stream-close responses. No timer from validation was retained. The showcase update was checked in isolated browser fixtures at 2560px, 1280px and 390px, including sparse data, 589 channel rows, keyboard guide scrolling and last-channel restoration. Empty channels/recordings, permission failure, retry limits and late-open cleanup also passed. Native playback was not repeated for the showcase update because automatic approval blocked relaunching the test application.
 
 Other native platforms, browser-specific HLS playback and completion of an actual scheduled recording were not validated in this change. Time shifting and series recording management are not implemented. Ordinary file playback retains its existing behavior; only Live TV sets the new live flags.

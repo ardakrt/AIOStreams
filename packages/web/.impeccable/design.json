@@ -1,140 +1,177 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-26T18:52:12Z",
-  "title": "Design System: AIOStreams web app — Live TV extension",
+  "generatedAt": "2026-10-26T21:12:49Z",
+  "title": "Design System: AIOStreams web app — Live TV showcase",
   "extensions": {
     "colorMeta": {
       "canvas": {
         "role": "neutral",
         "displayName": "Canvas"
       },
+      "stage": {
+        "role": "neutral",
+        "displayName": "Stage"
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Foreground"
+      },
       "white": {
         "role": "primary",
         "displayName": "White"
       },
-      "surface": {
+      "synopsis": {
         "role": "neutral",
-        "displayName": "Surface"
+        "displayName": "Synopsis"
       },
-      "selected-surface": {
+      "meta": {
         "role": "neutral",
-        "displayName": "Selected surface"
+        "displayName": "Metadata"
       },
-      "secondary-text": {
-        "role": "neutral",
-        "displayName": "Secondary text"
+      "live-text": {
+        "role": "secondary",
+        "displayName": "Live status"
       }
     },
     "typographyMeta": {
+      "program-title": {
+        "displayName": "Program title",
+        "purpose": "Current program's primary reading entry."
+      },
+      "synopsis": {
+        "displayName": "Synopsis",
+        "purpose": "Three-line stage description."
+      },
       "section-title": {
         "displayName": "Section title",
-        "purpose": "Repeated section headings."
+        "purpose": "Compact guide and rail headings."
       },
-      "body": {
-        "displayName": "Body",
-        "purpose": "Program descriptions and supporting metadata."
+      "channel-name": {
+        "displayName": "Channel name",
+        "purpose": "Dense rail labels."
       },
-      "label": {
-        "displayName": "Label",
-        "purpose": "Controls and section navigation."
+      "program-card-title": {
+        "displayName": "Guide title",
+        "purpose": "Titles in bounded schedule cards."
       }
     },
     "motion": [
       {
-        "name": "player-controls",
-        "value": "opacity 200ms cubic-bezier(0.4, 0, 0.2, 1)",
-        "purpose": "Playback control visibility; disabled under reduced motion."
+        "name": "stage-reveal",
+        "value": "220ms ease-out; opacity 0.6 to 1; translateY 4px to 0",
+        "purpose": "Program stage selection change; disabled under reduced motion."
+      },
+      {
+        "name": "channel-state",
+        "value": "background 120ms",
+        "purpose": "Rail row hover state."
       }
     ],
     "breakpoints": [
       {
-        "name": "sm",
-        "value": "640px"
+        "name": "wide-stage",
+        "value": "1800px"
       },
       {
-        "name": "lg",
-        "value": "1024px"
+        "name": "compact-desktop",
+        "value": "1250px"
+      },
+      {
+        "name": "stacked",
+        "value": "900px"
+      },
+      {
+        "name": "phone",
+        "value": "540px"
       }
     ]
   },
   "components": [
     {
-      "name": "White action",
+      "name": "White watch action",
       "kind": "button",
       "refersTo": "button-white",
-      "description": "Shared primary watch action.",
-      "html": "<button class=\"ds-white-action\">Canlı izle</button>",
-      "css": ".ds-white-action{font-family:Inter,sans-serif;font-size:14px;font-weight:500;height:40px;padding:0 16px;border:1px solid transparent;border-radius:8px;background:#fff;color:#000;cursor:pointer}.ds-white-action:hover{background:rgb(var(--color-gray-200,209 209 209))}.ds-white-action:active{background:rgb(var(--color-gray-300,202 202 202))}.ds-white-action:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:2px}.ds-white-action:disabled{opacity:.5;pointer-events:none}"
-    },
-    {
-      "name": "Secondary action",
-      "kind": "button",
-      "description": "Shared dark gray outline action.",
-      "html": "<button class=\"ds-secondary-action\">Yenile</button>",
-      "css": ".ds-secondary-action{font-family:Inter,sans-serif;font-size:14px;font-weight:500;height:40px;padding:0 16px;border:1px solid rgb(var(--color-gray-400,143 143 143)/.2);border-radius:8px;background:transparent;color:rgb(var(--color-gray-300,202 202 202));cursor:pointer}.ds-secondary-action:hover{background:rgb(var(--color-gray-500,90 90 90)/.15)}.ds-secondary-action:active{background:rgb(var(--color-gray-500,90 90 90)/.25)}.ds-secondary-action:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:2px}.ds-secondary-action:disabled{opacity:.5;pointer-events:none}"
+      "description": "Shared watch action beside a square favorite control.",
+      "html": "<button class=\"ds-watch\">Canlı izle</button>",
+      "css": ".ds-watch{font-family:Inter,sans-serif;font-size:14px;font-weight:500;height:40px;min-width:140px;padding:0 16px;border:1px solid transparent;border-radius:8px;background:#fff;color:#000;cursor:pointer}.ds-watch:hover{background:rgb(var(--color-gray-200,209 209 209))}.ds-watch:active{background:rgb(var(--color-gray-300,202 202 202))}.ds-watch:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:2px}.ds-watch:disabled{opacity:.5;pointer-events:none}"
     },
     {
       "name": "Channel search",
       "kind": "input",
       "refersTo": "input-search",
-      "description": "Channel-name and number filter.",
-      "html": "<input class=\"ds-channel-search\" type=\"search\" aria-label=\"Kanal ara\" placeholder=\"Kanal ara\" />",
-      "css": ".ds-channel-search{font-family:Inter,sans-serif;font-size:14px;padding:10px 12px;border:1px solid rgb(255 255 255/.15);border-radius:8px;background:rgb(255 255 255/.05);color:#fff}.ds-channel-search::placeholder{color:rgb(255 255 255/.65)}.ds-channel-search:hover{border-color:rgb(255 255 255/.15)}.ds-channel-search:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:2px}"
+      "description": "Compact search field; source places its search icon inside the start inset.",
+      "html": "<label class=\"ds-search\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"10\" cy=\"10\" r=\"6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/><path d=\"m15 15 5 5\" stroke=\"currentColor\" stroke-width=\"2\"/></svg><input type=\"search\" aria-label=\"Kanal ara\" placeholder=\"Kanal ara\"/></label>",
+      "css": ".ds-search{position:relative;display:block}.ds-search svg{position:absolute;top:13px;left:12px;width:17px;height:17px;color:#a1a1b0;pointer-events:none}.ds-search input{display:block;width:100%;font:13px Inter,sans-serif;min-height:42px;padding:10px 12px 10px 36px;border:1px solid #ffffff20;border-radius:8px;background:#ffffff06;color:#eee}.ds-search input::placeholder{color:#a4a4b1}.ds-search input:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:2px}"
     },
     {
-      "name": "Selected channel",
+      "name": "Selected channel row",
       "kind": "custom",
       "refersTo": "channel-selected",
-      "description": "Full-width channel choice with an explicit selected state.",
-      "html": "<button class=\"ds-channel\" aria-pressed=\"true\"><span class=\"ds-channel-name\">Deneme kanalı</span><span class=\"ds-channel-program\">Deneme programı</span></button>",
-      "css": ".ds-channel{display:block;width:100%;padding:12px;border:0;border-radius:8px;background:rgb(255 255 255/.1);color:#fff;text-align:start;font-family:Inter,sans-serif;cursor:pointer}.ds-channel-name{display:block;font-size:16px;font-weight:500}.ds-channel-program{display:block;margin-top:4px;font-size:14px;color:rgb(255 255 255/.65)}.ds-channel:hover{background:rgb(255 255 255/.1)}.ds-channel:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:-2px}"
+      "description": "Dense right-rail row with channel and current-program hierarchy.",
+      "html": "<button class=\"ds-channel\" aria-pressed=\"true\"><span class=\"ds-number\">1</span><span class=\"ds-channel-copy\"><span class=\"ds-name\">Deneme kanalı</span><span class=\"ds-program-label\">Deneme programı</span></span></button>",
+      "css": ".ds-channel{display:flex;align-items:center;gap:9px;width:100%;min-height:64px;padding:10px 8px;border:0;border-radius:8px;background:#ffffff10;color:#fff;text-align:start;font-family:Inter,sans-serif;cursor:pointer}.ds-number{flex:0 0 22px;color:#a6a6b2;font-size:10px;font-variant-numeric:tabular-nums}.ds-channel-copy{display:flex;flex-direction:column;gap:3px;min-width:0}.ds-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:500}.ds-program-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;color:#a0a0ad}.ds-channel:hover{background:#ffffff10}.ds-channel:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:2px}"
+    },
+    {
+      "name": "Guide card",
+      "kind": "card",
+      "refersTo": "guide-card",
+      "description": "Content-sized schedule card with bounded width, including sparse data.",
+      "html": "<article class=\"ds-guide-card\"><time>20:00 – 21:00</time><h3>Deneme programı</h3><p>Program açıklaması.</p></article>",
+      "css": ".ds-guide-card{display:flex;flex-direction:column;min-width:228px;max-width:420px;padding:18px;border:1px solid #ffffff14;border-radius:10px;background:#ffffff04;color:#f7f7f8;font-family:Inter,sans-serif}.ds-guide-card time{margin-bottom:12px;color:#b0b0bb;font-size:11px;font-variant-numeric:tabular-nums}.ds-guide-card h3{margin:0;font-size:15px;font-weight:500;line-height:1.45;text-wrap:balance}.ds-guide-card p{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin:9px 0 0;font-size:12px;line-height:1.6;color:#adadba}"
+    },
+    {
+      "name": "Program stage without art",
+      "kind": "card",
+      "description": "Current-program stage sized by content rather than an empty image placeholder.",
+      "html": "<section class=\"ds-stage\"><h2>Deneme programı</h2><p>Program açıklaması.</p><button class=\"ds-stage-watch\">Canlı izle</button></section>",
+      "css": ".ds-stage{isolation:isolate;overflow:hidden;padding:38px 40px 30px;border-radius:16px;background:#111114;color:#f7f7f8;font-family:Inter,sans-serif}.ds-stage h2{max-width:17ch;margin:0;font-size:clamp(32px,3vw,54px);font-weight:600;line-height:1.1;letter-spacing:-.035em;text-wrap:balance;overflow-wrap:anywhere}.ds-stage p{max-width:64ch;margin:18px 0 0;font-size:14px;line-height:1.7;color:#c1c1ca}.ds-stage-watch{margin-top:26px;min-width:140px;height:40px;padding:0 16px;border:1px solid transparent;border-radius:8px;background:#fff;color:#000;font:500 14px Inter,sans-serif;cursor:pointer}.ds-stage-watch:hover{background:#d1d1d1}.ds-stage-watch:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:2px}"
     },
     {
       "name": "Section navigation",
       "kind": "nav",
-      "description": "Local channel/guide and recordings selection.",
-      "html": "<nav class=\"ds-sections\"><button aria-pressed=\"true\">Kanallar ve yayın akışı</button><button aria-pressed=\"false\">Kayıtlar</button></nav>",
-      "css": ".ds-sections{display:flex;gap:24px;border-bottom:1px solid rgb(255 255 255/.1)}.ds-sections button{padding:0 4px 12px;border:0;border-bottom:2px solid transparent;background:transparent;color:rgb(255 255 255/.65);font:500 14px Inter,sans-serif;cursor:pointer}.ds-sections button[aria-pressed=true]{border-bottom-color:#fff;color:#fff}.ds-sections button:hover{color:#fff}.ds-sections button:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:4px}"
-    },
-    {
-      "name": "Current program container",
-      "kind": "card",
-      "description": "Tonal information surface without an added shadow.",
-      "html": "<section class=\"ds-program\"><h3>Deneme programı</h3><p>Program açıklaması</p></section>",
-      "css": ".ds-program{padding:20px;border-radius:16px;background:rgb(255 255 255/.05);color:#fff;font-family:Inter,sans-serif}.ds-program h3{margin:0;font-size:20px;font-weight:500;line-height:1.4}.ds-program p{margin:12px 0 0;font-size:14px;line-height:1.625;color:rgb(255 255 255/.65)}"
+      "description": "Compact text navigation with an active white underline.",
+      "html": "<nav class=\"ds-sections\"><button aria-pressed=\"true\">Kanallar</button><button aria-pressed=\"false\">Kayıtlar</button></nav>",
+      "css": ".ds-sections{display:flex;align-items:center;gap:24px}.ds-sections button{position:relative;padding:10px 0;border:0;background:transparent;color:#a4a4ad;font:14px Inter,sans-serif;cursor:pointer;transition:color .15s}.ds-sections button[aria-pressed=true],.ds-sections button:hover{color:#fff}.ds-sections button[aria-pressed=true]::after{content:'';position:absolute;inset-inline:0;bottom:-23px;height:2px;background:#fff}.ds-sections button:focus-visible{outline:2px solid var(--ring,#9f92ff);outline-offset:2px}"
     }
   ],
   "narrative": {
-    "northStar": "Existing AIOStreams interface",
-    "overview": "This is a descriptive record of the Live TV extension within the established app, not a new identity or a whole-app design audit. Evidence is the shared theme and button implementation, the Live TV pages, and the captured channel/guide surface. Playback overlays are described from code; their visual states were outside the finish review's capture scope.\n\nThe interface keeps attention on channel names, program information and watching. White primary actions sit against nearly black surfaces. Typography and compact controls carry hierarchy without introducing new artwork or promotional decoration.",
+    "northStar": "Program showcase",
+    "overview": "This record describes the user-selected Live TV composition: current-program information leads, a compact searchable channel rail sits alongside it, and the selected channel's daily guide follows. It supersedes the earlier oversized information-card layout. The surrounding AIOStreams black canvas, Inter typography, shared controls and navigation remain incumbent.\n\nThe detailed shades and type sizes in this record come from the finished `live-tv.css`; they are not claimed to be an exact reuse of the previous extension's palette or type ramp. The current evidence is visual and fixture-based. Dense fixtures use 589 illustrative channels and nine programs; neither those captures nor this document establish a fresh native launch or live-server result. The inspected real server supplied no program artwork.",
     "keyCharacteristics": [
-      "Restrained neutral surfaces with clear selected states.",
-      "Inter typography shared with the surrounding app.",
-      "Library icons and genuine server-provided channel artwork.",
-      "Lightweight overlays above the native video surface."
+      "Program-led hierarchy with a compact channel rail on the right.",
+      "Genuine optional art, with a content-sized text/logotype fallback.",
+      "Time-led guide cards with bounded width and keyboard scrolling.",
+      "Remembered channel selection and restrained neutral layering."
     ],
     "rules": [
       {
         "name": "The Selection Rule",
-        "body": "Distinguish selection through surface tone and an explicit control state; the channel list uses `aria-pressed`, and section controls add a white underline.",
+        "body": "Use the implemented row surface, selected name treatment and explicit control state to distinguish the chosen channel. Do not turn every channel into an independent elevated card.",
         "section": "colors"
       },
       {
-        "name": "The Content Hierarchy Rule",
-        "body": "Give the channel or program name more emphasis than its number, time or explanatory text.",
+        "name": "The Hierarchy Rule",
+        "body": "Make the current program the reading entry point; channel navigation and schedule metadata support it.",
         "section": "typography"
+      },
+      {
+        "name": "The Content-Sized Fallback Rule",
+        "body": "A stage without genuine artwork derives its height from its content and padding. The artwork-specific minimum heights apply only to the art variant. Do not add a fixed-height image placeholder to an empty-art program.",
+        "section": "layout"
       }
     ],
     "dos": [
-      "Do reuse the existing shared controls and Inter typography.",
-      "Do keep primary watching actions prominent and metadata subordinate.",
-      "Do use real channel artwork or the existing TV icon fallback.",
-      "Do preserve keyboard focus and a readable secondary-text treatment."
+      "Do lead with program information and keep the channel rail compact.",
+      "Do let missing-art stages size to their content.",
+      "Do keep guide cards bounded and the strip reachable by keyboard.",
+      "Do preserve selection and reveal the selected/current item within its scroll container.",
+      "Do use genuine supplied art or the implemented text/logotype fallback."
     ],
     "donts": [
-      "Don't treat the Live TV two-column composition as a whole-app layout mandate.",
-      "Don't replace server program information with invented content or decorative artwork.",
-      "Don't canonize uncaptured playback or recording states as visually reviewed."
+      "Don't stretch sparse guide cards or empty artwork areas to fill unused space.",
+      "Don't let the decorative logotype wrap or overpower the program title.",
+      "Don't invent categories, quality claims or broadcast imagery.",
+      "Don't present fixture captures as live-server or native-playback evidence."
     ]
   }
 }

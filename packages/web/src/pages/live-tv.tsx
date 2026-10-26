@@ -1,4 +1,4 @@
-import { t } from '@lingui/core/macro';
+import { plural, t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import React from 'react';
 import {
@@ -7,7 +7,8 @@ import {
   BiHeart,
   BiPlay,
   BiRefresh,
-  BiTv,
+  BiSearch,
+  BiTimeFive,
 } from 'react-icons/bi';
 import { Button } from '@aiostreams/ui/button';
 import { cn } from '@aiostreams/ui/core/styling';
@@ -16,9 +17,17 @@ import { PageBody } from '../components/layout';
 import { useSession } from '../lib/session';
 import { JellyfinError } from '../lib/client';
 import { formatLocale } from '../lib/i18n';
-import { posterUrl } from '../lib/images';
+import { landscapeUrls, posterUrl } from '../lib/images';
 import { navigate, to } from '../lib/paths';
+import { storage } from '../lib/storage';
+import { useAction } from '../lib/input';
 import { programProgress } from '../lib/live-tv/api';
+import {
+  channelLabel,
+  channelSearch,
+  programOnNow,
+  programRemaining,
+} from '../lib/live-tv/presentation';
 import {
   useChannels,
   useGuide,
@@ -27,6 +36,8 @@ import {
   useLiveTvAllowed,
 } from '../lib/live-tv/queries';
 import type { BaseItemDto } from '../lib/types';
+import { LiveRecordings } from './live-recordings';
+import './live-tv.css';
 
 export function dayKey(date = new Date()) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -53,77 +64,192 @@ export function ChannelLogo({
   large?: boolean;
 }) {
   const { client } = useSession();
-  const url = posterUrl(client, channel, { maxWidth: large ? 200 : 80 });
+  const url = posterUrl(client, channel, { maxWidth: large ? 480 : 120 });
   const [failed, setFailed] = React.useState<string>();
+  const label = channelLabel(channel).title;
   return (
-    <span
-      className={cn(
-        'flex shrink-0 items-center justify-center rounded-lg bg-white/5 p-2',
-        large ? 'h-24 w-40 sm:h-28 sm:w-48' : 'h-12 w-16'
-      )}
-    >
+    <span className={cn('live-tv-logo', large && 'live-tv-logo-large')}>
       {url && failed !== url ? (
         <img
           src={url}
           alt=""
-          loading="lazy"
+          loading={large ? 'eager' : 'lazy'}
           className="h-full w-full object-contain"
           onError={() => setFailed(url)}
         />
       ) : (
-        <BiTv
-          aria-hidden
-          className={
-            large ? 'h-10 w-10 text-white/65' : 'h-6 w-6 text-white/65'
-          }
-        />
+        <span aria-hidden className="live-tv-logo-initials">
+          {large
+            ? label
+            : label
+                .split(/\s+/)
+                .slice(0, 2)
+                .map((word) => word[0])
+                .join('')}
+        </span>
       )}
+    </span>
+  );
+}
+
+function StageImage({
+  urls,
+  onFailure,
+}: {
+  urls: string[];
+  onFailure(url: string): void;
+}) {
+  const url = urls[0];
+  return url ? (
+    <div className="live-tv-stage-art" aria-hidden>
+      <img src={url} alt="" onError={() => onFailure(url)} />
+      <div className="live-tv-stage-shade" />
+    </div>
+  ) : null;
+}
+
+function LiveBadge() {
+  return (
+    <span className="live-tv-live-badge">
+      <span aria-hidden />
+      <Trans>Live</Trans>
     </span>
   );
 }
 
 export function LiveTvPage() {
   const allowed = useLiveTvAllowed();
-  const { user } = useSession();
+  const { client, user } = useSession();
   const channels = useChannels();
+  const selectionKey = `aiostreams-web-live-channel:${client.base}:${user.Id}`;
   const [tab, setTab] = React.useState<'channels' | 'recordings'>('channels');
   const [search, setSearch] = React.useState('');
   const [favorites, setFavorites] = React.useState(false);
-  const [selectedId, setSelectedId] = React.useState<string>();
+  const [genre, setGenre] = React.useState('');
+  const [failedArt, setFailedArt] = React.useState<string[]>([]);
+  const [selectedId, setSelectedId] = React.useState(
+    () => storage.get<string>(selectionKey) ?? undefined
+  );
   const [day, setDay] = React.useState(dayKey);
   const [now, setNow] = React.useState(Date.now);
+  const list = React.useRef<HTMLDivElement>(null);
+  const schedule = React.useRef<HTMLOListElement>(null);
+  const scrollGuide = (direction: number) => {
+    const strip = schedule.current;
+    if (!strip || document.activeElement !== strip) return false;
+    strip.scrollBy({
+      left: direction * Math.max(240, strip.clientWidth * 0.75),
+    });
+    return true;
+  };
+  useAction('nav.left', () => scrollGuide(-1));
+  useAction('nav.right', () => scrollGuide(1));
   React.useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 30_000);
     return () => clearInterval(timer);
   }, []);
   const all = channels.data ?? [];
+  const genres = React.useMemo(
+    () =>
+      [...new Set(all.flatMap((c) => c.Genres ?? []))].sort((a, b) =>
+        a.localeCompare(b, formatLocale())
+      ),
+    [all]
+  );
   const filtered = React.useMemo(
     () =>
       all.filter(
         (c) =>
           (!favorites || c.UserData?.IsFavorite) &&
-          `${c.Name} ${c.ChannelNumber ?? ''}`
-            .toLocaleLowerCase(formatLocale())
-            .includes(search.toLocaleLowerCase(formatLocale()))
+          (!genre || c.Genres?.includes(genre)) &&
+          channelSearch(`${c.Name} ${c.ChannelNumber ?? ''}`).includes(
+            channelSearch(search)
+          )
       ),
-    [all, favorites, search]
+    [all, favorites, genre, search]
   );
-  const selected = filtered.find((c) => c.Id === selectedId) ?? filtered[0];
+  // Filtering the rail does not discard what the viewer is considering.
+  const selected =
+    all.find((c) => c.Id === selectedId) ?? filtered[0] ?? all[0];
+  const select = (channel: BaseItemDto) => {
+    setSelectedId(channel.Id);
+    storage.set(selectionKey, channel.Id);
+  };
   const guide = useGuide(selected?.Id, day);
-  const { recordings, timers } = useLiveRecords(tab === 'recordings');
+  const { timers } = useLiveRecords(false);
   const actions = useLiveActions();
+  const programs = guide.data?.Items ?? [];
   const current =
-    guide.data?.Items?.find(
-      (p) =>
-        Date.parse(p.StartDate ?? '') <= now &&
-        Date.parse(p.EndDate ?? '') > now
-    ) ??
-    (selected?.CurrentProgram &&
-    Date.parse(selected.CurrentProgram.EndDate ?? '') > now
-      ? selected.CurrentProgram
+    programs.find((p) => programOnNow(p, now)) ??
+    (programOnNow(selected?.CurrentProgram, now)
+      ? selected?.CurrentProgram
       : undefined);
+  const next = programs.find((p) => Date.parse(p.StartDate ?? '') > now);
+  const minutesLeft = current ? programRemaining(current, now) : 0;
   const canRecord = user.Policy?.EnableLiveTvManagement === true;
+  const art = current
+    ? landscapeUrls(client, current, { maxWidth: 1600 }).filter(
+        (url) => !failedArt.includes(url)
+      )
+    : [];
   const fail = () => toast.error(t`The change could not be saved. Try again.`);
+  const watch = (channel: BaseItemDto) => {
+    select(channel);
+    navigate(to.livePlay(channel.Id!));
+  };
+  React.useEffect(() => {
+    const rail = list.current;
+    // eslint-disable-next-line lingui/no-unlocalized-strings -- DOM selector
+    const row = rail?.querySelector<HTMLElement>('[data-selected="true"]');
+    if (!rail || !row) return;
+    if (
+      row.offsetTop < rail.scrollTop ||
+      row.offsetTop + row.offsetHeight > rail.scrollTop + rail.clientHeight
+    )
+      rail.scrollTop = Math.max(0, row.offsetTop - rail.clientHeight / 3);
+  }, [selected?.Id]);
+  React.useEffect(() => {
+    const strip = schedule.current;
+    const card = strip?.querySelector<HTMLElement>('[data-current="true"]');
+    if (strip)
+      strip.scrollLeft = card
+        ? Math.max(0, card.offsetLeft - strip.offsetLeft)
+        : 0;
+  }, [selected?.Id, day, guide.data]);
+  const recordControl = (program: BaseItemDto) => {
+    if (!canRecord || Date.parse(program.EndDate ?? '') <= now) return null;
+    const timer = timers.data?.Items?.find(
+      (v) => v.ProgramId === program.Id && v.Status !== 'Cancelled'
+    );
+    return (
+      <Button
+        size="sm"
+        intent="gray-outline"
+        disabled={
+          actions.record.isPending ||
+          actions.cancel.isPending ||
+          timers.isLoading ||
+          !!timers.error
+        }
+        onClick={() =>
+          timer
+            ? actions.cancel.mutate(timer, { onError: fail })
+            : actions.record.mutate(program, {
+                onError: fail,
+                onSuccess: () => toast.success(t`Recording scheduled`),
+              })
+        }
+      >
+        {timer ? <Trans>Cancel recording</Trans> : <Trans>Record</Trans>}
+      </Button>
+    );
+  };
+  const moveDay = (direction: number) => {
+    // eslint-disable-next-line lingui/no-unlocalized-strings -- ISO timestamp
+    const date = new Date(`${day}T12:00:00`);
+    date.setDate(date.getDate() + direction);
+    setDay(dayKey(date));
+  };
   if (!allowed)
     return (
       <PageBody>
@@ -137,173 +263,172 @@ export function LiveTvPage() {
     );
   return (
     <PageBody>
-      <header className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-3xl font-semibold tracking-tight">
-          <Trans>Live TV</Trans>
-        </h1>
-        <Button
-          intent="gray-outline"
-          onClick={() => {
-            void channels.refetch();
-            void guide.refetch();
-          }}
-          disabled={channels.isFetching}
-          leftIcon={<BiRefresh />}
-        >
-          <Trans>Refresh</Trans>
-        </Button>
-      </header>
-      <div
-        className="flex gap-6 border-b border-white/10"
-        role="group"
-        aria-label={t`Live TV sections`}
-      >
-        {(['channels', 'recordings'] as const).map((value) => (
-          <button
-            key={value}
-            type="button"
-            aria-pressed={tab === value}
-            onClick={() => setTab(value)}
-            className={cn(
-              'border-b-2 px-1 pb-3 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4',
-              tab === value
-                ? 'border-white text-white'
-                : 'border-transparent text-white/65 hover:text-white'
-            )}
-          >
-            {value === 'channels' ? (
-              <Trans>Channels & guide</Trans>
-            ) : (
-              <Trans>Recordings</Trans>
-            )}
-          </button>
-        ))}
-      </div>
-      {tab === 'channels' ? (
-        <>
-          {channels.isLoading ? (
-            <p role="status">
+      <div className="live-tv-shell" data-ui="live-tv-workspace">
+        <header className="live-tv-header">
+          <div className="live-tv-heading">
+            <h1>
+              <Trans>Live TV</Trans>
+            </h1>
+            <nav aria-label={t`Live TV sections`}>
+              <button
+                type="button"
+                aria-pressed={tab === 'channels'}
+                onClick={() => setTab('channels')}
+              >
+                <Trans>Live channels</Trans>
+              </button>
+              <button
+                type="button"
+                aria-pressed={tab === 'recordings'}
+                onClick={() => setTab('recordings')}
+              >
+                <Trans>Recordings</Trans>
+              </button>
+            </nav>
+          </div>
+          <div className="live-tv-header-tools">
+            <time
+              className="live-tv-clock"
+              dateTime={new Date(now).toISOString()}
+            >
+              <BiTimeFive aria-hidden />
+              {new Date(now).toLocaleTimeString(formatLocale(), {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </time>
+            <Button
+              intent="gray-outline"
+              size="sm"
+              onClick={() => {
+                void channels.refetch();
+                if (selected) void guide.refetch();
+              }}
+              disabled={channels.isFetching}
+              leftIcon={<BiRefresh />}
+            >
+              <Trans>Refresh</Trans>
+            </Button>
+          </div>
+        </header>
+        {tab === 'recordings' ? (
+          <div className="live-tv-recordings">
+            <LiveRecordings />
+          </div>
+        ) : channels.isLoading ? (
+          <div className="live-tv-loading" role="status">
+            <span className="live-tv-loading-block" />
+            <p>
               <Trans>Loading channels…</Trans>
             </p>
-          ) : channels.error ? (
-            <div role="alert" className="space-y-3">
-              <p>
-                {channels.error instanceof JellyfinError &&
-                channels.error.status === 403
-                  ? t`Your account does not have permission to watch Live TV.`
-                  : t`Channels could not be loaded. Check your connection and try again.`}
-              </p>
-              <Button
-                intent="gray-outline"
-                onClick={() => void channels.refetch()}
-              >
-                <Trans>Try again</Trans>
-              </Button>
-            </div>
-          ) : !all.length ? (
-            <p className="text-white/65">
+          </div>
+        ) : channels.error ? (
+          <div role="alert" className="live-tv-message">
+            <p>
+              {channels.error instanceof JellyfinError &&
+              channels.error.status === 403
+                ? t`Your account does not have permission to watch Live TV.`
+                : t`Channels could not be loaded. Check your connection and try again.`}
+            </p>
+            <Button
+              intent="gray-outline"
+              onClick={() => void channels.refetch()}
+            >
+              <Trans>Try again</Trans>
+            </Button>
+          </div>
+        ) : !all.length ? (
+          <div className="live-tv-message">
+            <p>
               <Trans>
                 No channels are available. Check Live TV in your Jellyfin
                 server.
               </Trans>
             </p>
-          ) : (
-            <div className="grid items-start gap-8 lg:grid-cols-[minmax(260px,340px)_minmax(0,1fr)]">
-              <section aria-label={t`Channels`} className="min-w-0 space-y-3">
-                <div className="flex items-center gap-2">
-                  <input
-                    aria-label={t`Search channels`}
-                    placeholder={t`Search channels`}
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    type="search"
-                    className="min-w-0 flex-1 rounded-lg border border-white/15 bg-white/5 px-3 py-2.5 text-sm placeholder:text-white/65 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                  />
-                  <button
-                    type="button"
-                    aria-label={t`Favorite channels`}
-                    aria-pressed={favorites}
-                    onClick={() => setFavorites(!favorites)}
-                    className={cn(
-                      'rounded-lg p-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
-                      favorites
-                        ? 'bg-white text-black'
-                        : 'bg-white/5 hover:bg-white/10'
-                    )}
-                  >
-                    <BiHeart className="h-5 w-5" />
-                  </button>
-                </div>
-                <div
-                  className="max-h-[50dvh] overflow-y-auto lg:max-h-[65dvh]"
-                  role="group"
-                  aria-label={t`Choose a channel`}
-                >
-                  {filtered.map((channel) => (
-                    <button
-                      type="button"
-                      key={channel.Id}
-                      aria-pressed={channel.Id === selected?.Id}
-                      onClick={() => setSelectedId(channel.Id)}
-                      className={cn(
-                        'flex w-full items-center gap-3 rounded-lg p-3 text-start transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px]',
-                        channel.Id === selected?.Id
-                          ? 'bg-white/10'
-                          : 'hover:bg-white/5'
-                      )}
-                    >
-                      <ChannelLogo channel={channel} />
-                      <span className="min-w-0 flex-1">
-                        <span className="block truncate font-medium">
-                          {channel.ChannelNumber && (
-                            <span className="me-2 text-sm tabular-nums text-white/65">
-                              {channel.ChannelNumber}
-                            </span>
-                          )}
-                          {channel.Name}
-                        </span>
-                        <span className="mt-1 block truncate text-sm text-white/65">
-                          {channel.CurrentProgram?.Name ??
-                            t`Program information unavailable`}
-                        </span>
-                      </span>
-                      {channel.UserData?.IsFavorite && (
-                        <BiHeart
-                          aria-label={t`Favorite`}
-                          className="shrink-0"
-                        />
-                      )}
-                    </button>
-                  ))}
-                  {!filtered.length && (
-                    <p className="p-3 text-sm text-white/65">
-                      <Trans>No channels match your search or filter.</Trans>
-                    </p>
-                  )}
-                </div>
-              </section>
+          </div>
+        ) : (
+          <div className="live-tv-body">
+            <div className="live-tv-main">
               {selected && (
                 <section
-                  className="min-w-0 space-y-7"
+                  className={cn(
+                    'live-tv-stage',
+                    art.length > 0 && 'live-tv-stage-with-art'
+                  )}
                   aria-label={selected.Name ?? t`Selected channel`}
+                  data-ui="live-tv-showcase"
                 >
-                  <div className="space-y-5 rounded-2xl bg-white/5 p-5 sm:p-7">
-                    <div className="flex flex-wrap items-center gap-5">
-                      <ChannelLogo channel={selected} large />
-                      <div className="min-w-0 flex-1">
-                        <h2 className="break-words text-2xl font-semibold">
-                          {selected.Name}
-                        </h2>
-                        <p className="mt-2 text-sm text-white/65">
-                          {current
-                            ? timeRange(current)
-                            : t`Program information unavailable`}
-                        </p>
-                      </div>
+                  <div className="live-tv-stage-brand" aria-hidden>
+                    <ChannelLogo channel={selected} large />
+                  </div>
+                  <StageImage
+                    key={current?.Id ?? selected.Id}
+                    urls={art}
+                    onFailure={(url) =>
+                      setFailedArt((old) => [...old.slice(-20), url])
+                    }
+                  />
+                  <div className="live-tv-stage-body" key={selected.Id}>
+                    <div className="live-tv-stage-channel">
+                      <ChannelLogo channel={selected} />
+                      <span>{selected.Name}</span>
+                      {current && <LiveBadge />}
+                    </div>
+                    <h2 className="live-tv-program-title">
+                      {current?.Name ?? channelLabel(selected).title}
+                    </h2>
+                    <div className="live-tv-program-meta">
+                      {current ? (
+                        <>
+                          <span>{timeRange(current)}</span>
+                          {current.Genres?.slice(0, 2).map((value) => (
+                            <span key={value}>{value}</span>
+                          ))}
+                        </>
+                      ) : (
+                        <span>
+                          <Trans>Program information unavailable</Trans>
+                        </span>
+                      )}
+                    </div>
+                    {current?.Overview && (
+                      <p className="live-tv-synopsis">
+                        {current.Overview.replace(/<[^>]*>/g, '')}
+                      </p>
+                    )}
+                    <div className="live-tv-stage-actions">
+                      <Button
+                        intent="white"
+                        size="lg"
+                        leftIcon={<BiPlay />}
+                        onClick={() => watch(selected)}
+                      >
+                        <Trans>Watch live</Trans>
+                      </Button>
+                      <button
+                        type="button"
+                        className="live-tv-favorite-action"
+                        aria-label={
+                          selected.UserData?.IsFavorite
+                            ? t`Remove favorite`
+                            : t`Add favorite`
+                        }
+                        aria-pressed={!!selected.UserData?.IsFavorite}
+                        title={
+                          selected.UserData?.IsFavorite
+                            ? t`Remove favorite`
+                            : t`Add favorite`
+                        }
+                        disabled={actions.favorite.isPending}
+                        onClick={() =>
+                          actions.favorite.mutate(selected, { onError: fail })
+                        }
+                      >
+                        <BiHeart aria-hidden />
+                      </button>
                     </div>
                     {current && (
-                      <div className="space-y-3">
-                        <h3 className="text-xl font-medium">{current.Name}</h3>
+                      <div className="live-tv-stage-progress">
                         <div
                           role="progressbar"
                           aria-label={t`Current program progress`}
@@ -312,280 +437,275 @@ export function LiveTvPage() {
                           aria-valuenow={Math.round(
                             programProgress(current, now) * 100
                           )}
-                          className="h-1 overflow-hidden rounded-full bg-white/15"
                         >
-                          <div
-                            className="h-full bg-white"
+                          <span
                             style={{
                               width: `${programProgress(current, now) * 100}%`,
                             }}
                           />
                         </div>
-                        {current.Overview && (
-                          <p className="max-w-prose whitespace-pre-line text-sm leading-relaxed text-white/65">
-                            {current.Overview.replace(/<[^>]*>/g, '')}
-                          </p>
-                        )}
+                        <span>
+                          {plural(minutesLeft, {
+                            one: '# minute left',
+                            other: '# minutes left',
+                          })}
+                        </span>
                       </div>
                     )}
-                    <div className="flex flex-wrap gap-3">
-                      <Button
-                        intent="white"
-                        leftIcon={<BiPlay />}
-                        onClick={() => navigate(to.livePlay(selected.Id!))}
-                      >
-                        <Trans>Watch live</Trans>
-                      </Button>
-                      <Button
-                        intent="gray-outline"
-                        leftIcon={<BiHeart />}
-                        disabled={actions.favorite.isPending}
-                        onClick={() =>
-                          actions.favorite.mutate(selected, { onError: fail })
-                        }
-                      >
-                        {selected.UserData?.IsFavorite ? (
-                          <Trans>Remove favorite</Trans>
-                        ) : (
-                          <Trans>Add favorite</Trans>
-                        )}
-                      </Button>
-                    </div>
                   </div>
-                  <section aria-label={t`Program guide`} className="space-y-4">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <h2 className="text-xl font-semibold">
-                        <Trans>Program guide</Trans>
-                      </h2>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          aria-label={t`Previous day`}
-                          className="rounded p-2 hover:bg-white/10 focus-visible:outline"
-                          onClick={() => {
-                            const date = new Date(`${day}T12:00:00`);
-                            date.setDate(date.getDate() - 1);
-                            setDay(dayKey(date));
-                          }}
-                        >
-                          <BiChevronLeft className="h-5 w-5 rtl:-scale-x-100" />
-                        </button>
-                        <input
-                          type="date"
-                          aria-label={t`Guide date`}
-                          value={day}
-                          onChange={(e) => {
-                            if (/^\d{4}-\d{2}-\d{2}$/.test(e.target.value))
-                              setDay(e.target.value);
-                          }}
-                          className="min-w-0 rounded-lg bg-white/5 px-3 py-2 text-sm [color-scheme:dark]"
-                        />
-                        <button
-                          type="button"
-                          aria-label={t`Next day`}
-                          className="rounded p-2 hover:bg-white/10 focus-visible:outline"
-                          onClick={() => {
-                            const date = new Date(`${day}T12:00:00`);
-                            date.setDate(date.getDate() + 1);
-                            setDay(dayKey(date));
-                          }}
-                        >
-                          <BiChevronRight className="h-5 w-5 rtl:-scale-x-100" />
-                        </button>
-                      </div>
-                    </div>
-                    {guide.isLoading ? (
-                      <p role="status">
-                        <Trans>Loading guide…</Trans>
-                      </p>
-                    ) : guide.error ? (
-                      <p role="alert" className="text-white/65">
-                        <Trans>
-                          The program guide could not be loaded. You can still
-                          watch the channel.
-                        </Trans>
-                      </p>
-                    ) : !guide.data?.Items?.length ? (
-                      <p className="text-sm text-white/65">
-                        <Trans>
-                          No guide data for this day. You can still watch the
-                          channel.
-                        </Trans>
-                      </p>
-                    ) : (
-                      <ol className="divide-y divide-white/10">
-                        {guide.data.Items.map((program) => {
-                          const timer = timers.data?.Items?.find(
-                            (v) =>
-                              v.ProgramId === program.Id &&
-                              v.Status !== 'Cancelled'
-                          );
-                          const live =
-                            Date.parse(program.StartDate ?? '') <= now &&
-                            Date.parse(program.EndDate ?? '') > now;
-                          return (
-                            <li
-                              key={program.Id}
-                              className="flex flex-wrap items-start gap-3 py-4"
-                            >
-                              <div className="w-28 shrink-0 pt-1 text-sm tabular-nums text-white/65">
-                                {timeRange(program)}
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <div className="flex flex-wrap items-center gap-2">
-                                  <h3 className="font-medium">
-                                    {program.Name}
-                                  </h3>
-                                  {live && (
-                                    <span className="rounded bg-white/10 px-2 py-0.5 text-xs">
-                                      <Trans>On now</Trans>
-                                    </span>
-                                  )}
-                                </div>
-                                {program.Overview && (
-                                  <p className="mt-1 line-clamp-3 text-sm leading-relaxed text-white/65">
-                                    {program.Overview.replace(/<[^>]*>/g, '')}
-                                  </p>
-                                )}
-                              </div>
-                              {canRecord &&
-                                Date.parse(program.EndDate ?? '') > now && (
-                                  <Button
-                                    size="sm"
-                                    intent="gray-outline"
-                                    disabled={
-                                      actions.record.isPending ||
-                                      actions.cancel.isPending ||
-                                      timers.isLoading ||
-                                      !!timers.error
-                                    }
-                                    onClick={() =>
-                                      timer
-                                        ? actions.cancel.mutate(timer, {
-                                            onError: fail,
-                                          })
-                                        : actions.record.mutate(program, {
-                                            onError: fail,
-                                            onSuccess: () =>
-                                              toast.success(
-                                                t`Recording scheduled`
-                                              ),
-                                          })
-                                    }
-                                  >
-                                    {timer ? (
-                                      <Trans>Cancel recording</Trans>
-                                    ) : (
-                                      <Trans>Record</Trans>
-                                    )}
-                                  </Button>
-                                )}
-                            </li>
-                          );
-                        })}
-                      </ol>
-                    )}
-                  </section>
                 </section>
               )}
-            </div>
-          )}
-        </>
-      ) : (
-        <section className="space-y-8">
-          {canRecord && (
-            <div className="space-y-3">
-              <h2 className="text-xl font-semibold">
-                <Trans>Scheduled recordings</Trans>
-              </h2>
-              {timers.error ? (
-                <p role="alert">
-                  <Trans>Scheduled recordings could not be loaded.</Trans>
-                </p>
-              ) : timers.isLoading ? (
-                <p role="status">
-                  <Trans>Loading…</Trans>
-                </p>
-              ) : !timers.data?.Items?.length ? (
-                <p className="text-white/65">
-                  <Trans>No recordings are scheduled.</Trans>
-                </p>
-              ) : (
-                <ul className="divide-y divide-white/10">
-                  {timers.data.Items.map((timer) => (
-                    <li
-                      key={timer.Id}
-                      className="flex items-center justify-between gap-4 py-4"
-                    >
-                      <div className="min-w-0">
-                        <h3 className="break-words font-medium">
-                          {timer.Name}
-                        </h3>
-                        <p className="mt-1 text-sm text-white/65">
-                          {timer.ChannelName} ·{' '}
-                          {timer.StartDate &&
-                            new Date(timer.StartDate).toLocaleString(
-                              formatLocale()
-                            )}
-                        </p>
-                      </div>
-                      <Button
-                        intent="gray-outline"
-                        disabled={actions.cancel.isPending}
-                        onClick={() =>
-                          actions.cancel.mutate(timer, { onError: fail })
-                        }
-                      >
-                        <Trans>Cancel recording</Trans>
-                      </Button>
-                    </li>
-                  ))}
-                </ul>
+              {next && (
+                <div className="live-tv-next">
+                  <div>
+                    <span className="live-tv-next-label">
+                      <Trans>Up next</Trans>
+                    </span>
+                    <time>{timeRange(next)}</time>
+                  </div>
+                  <p>{next.Name}</p>
+                </div>
               )}
-            </div>
-          )}
-          <div className="space-y-3">
-            <h2 className="text-xl font-semibold">
-              <Trans>Recordings</Trans>
-            </h2>
-            {recordings.isLoading ? (
-              <p role="status">
-                <Trans>Loading…</Trans>
-              </p>
-            ) : recordings.error ? (
-              <p role="alert">
-                <Trans>Recordings could not be loaded.</Trans>
-              </p>
-            ) : !recordings.data?.Items?.length ? (
-              <p className="text-white/65">
-                <Trans>No recordings yet.</Trans>
-              </p>
-            ) : (
-              <ul className="divide-y divide-white/10">
-                {recordings.data.Items.map((item) => (
-                  <li key={item.Id}>
+              <section aria-label={t`Program guide`} className="live-tv-guide">
+                <div className="live-tv-guide-header">
+                  <h2>
+                    <Trans>Program guide</Trans>
+                  </h2>
+                  <div className="live-tv-date-tools">
                     <button
                       type="button"
-                      className="flex w-full items-center gap-4 rounded-lg p-4 text-start hover:bg-white/5 focus-visible:outline"
-                      onClick={() => navigate(to.play(item.Id!, ''))}
+                      aria-label={t`Previous day`}
+                      onClick={() => moveDay(-1)}
                     >
-                      <BiPlay aria-hidden className="h-7 w-7 shrink-0" />
-                      <span className="min-w-0">
-                        <span className="block break-words font-medium">
-                          {item.Name}
-                        </span>
-                        <span className="text-sm text-white/65">
-                          {item.ChannelName}
-                        </span>
-                      </span>
+                      <BiChevronLeft className="rtl:-scale-x-100" />
                     </button>
-                  </li>
-                ))}
-              </ul>
-            )}
+                    <input
+                      type="date"
+                      aria-label={t`Guide date`}
+                      value={day}
+                      onChange={(e) => {
+                        if (/^\d{4}-\d{2}-\d{2}$/.test(e.target.value))
+                          setDay(e.target.value);
+                      }}
+                    />
+                    <button
+                      type="button"
+                      aria-label={t`Next day`}
+                      onClick={() => moveDay(1)}
+                    >
+                      <BiChevronRight className="rtl:-scale-x-100" />
+                    </button>
+                    {day !== dayKey() && (
+                      <button
+                        type="button"
+                        className="live-tv-today"
+                        onClick={() => setDay(dayKey())}
+                      >
+                        <Trans>Today</Trans>
+                      </button>
+                    )}
+                  </div>
+                </div>
+                {guide.isLoading ? (
+                  <p role="status" className="live-tv-guide-notice">
+                    <Trans>Loading guide…</Trans>
+                  </p>
+                ) : guide.error ? (
+                  <p role="alert" className="live-tv-guide-notice">
+                    <Trans>
+                      The program guide could not be loaded. You can still watch
+                      the channel.
+                    </Trans>
+                  </p>
+                ) : !programs.length ? (
+                  <p className="live-tv-guide-notice">
+                    <Trans>
+                      No guide data for this day. You can still watch the
+                      channel.
+                    </Trans>
+                  </p>
+                ) : (
+                  <ol
+                    ref={schedule}
+                    className="live-tv-schedule"
+                    tabIndex={0}
+                    aria-label={t`Browse program guide`}
+                    onKeyDown={(event) => {
+                      if (event.target !== event.currentTarget) return;
+                      if (event.key === 'Home' || event.key === 'End') {
+                        event.preventDefault();
+                        event.currentTarget.scrollLeft =
+                          event.key === 'Home'
+                            ? 0
+                            : event.currentTarget.scrollWidth;
+                      }
+                    }}
+                  >
+                    {programs.map((program) => {
+                      const live = programOnNow(program, now);
+                      const past = Date.parse(program.EndDate ?? '') <= now;
+                      return (
+                        <li
+                          key={program.Id}
+                          className={cn(
+                            'live-tv-program',
+                            live && 'live-tv-program-current',
+                            past && 'live-tv-program-past'
+                          )}
+                          data-current={live}
+                        >
+                          <div className="live-tv-program-time">
+                            <time>{timeRange(program)}</time>
+                            {live && (
+                              <span>
+                                <Trans>On now</Trans>
+                              </span>
+                            )}
+                          </div>
+                          <h3>{program.Name}</h3>
+                          {program.Overview && (
+                            <p>{program.Overview.replace(/<[^>]*>/g, '')}</p>
+                          )}
+                          <div className="live-tv-program-action">
+                            {recordControl(program)}
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                )}
+              </section>
+            </div>
+            <aside className="live-tv-rail" aria-label={t`Channels`}>
+              <div className="live-tv-rail-header">
+                <h2>
+                  <Trans>Channels</Trans>
+                </h2>
+                <span>{all.length.toLocaleString(formatLocale())}</span>
+              </div>
+              <div className="live-tv-search">
+                <BiSearch aria-hidden />
+                <input
+                  aria-label={t`Search channels`}
+                  placeholder={t`Search channels`}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  type="search"
+                />
+              </div>
+              <div
+                className="live-tv-channel-filters"
+                role="group"
+                aria-label={t`Channel filters`}
+              >
+                <button
+                  type="button"
+                  aria-pressed={!favorites}
+                  onClick={() => setFavorites(false)}
+                >
+                  <Trans>All channels</Trans>
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={favorites}
+                  onClick={() => setFavorites(true)}
+                >
+                  <BiHeart aria-hidden />
+                  <Trans>Favourites</Trans>
+                </button>
+                {genres.length > 1 && (
+                  <select
+                    aria-label={t`Channel category`}
+                    value={genre}
+                    onChange={(e) => setGenre(e.target.value)}
+                  >
+                    <option value="">{t`All categories`}</option>
+                    {genres.map((value) => (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+              <div
+                className="live-tv-rail-list"
+                ref={list}
+                role="group"
+                aria-label={t`Choose a channel`}
+              >
+                {filtered.map((channel) => {
+                  const label = channelLabel(channel);
+                  const quality =
+                    label.quality.find((value) => value.endsWith('p')) ??
+                    label.quality[0];
+                  const channelName = channel.Name ?? label.title;
+                  const active = channel.Id === selected?.Id;
+                  const onNow = programOnNow(channel.CurrentProgram, now)
+                    ? channel.CurrentProgram
+                    : undefined;
+                  return (
+                    <div
+                      key={channel.Id}
+                      className="live-tv-channel"
+                      data-selected={active}
+                    >
+                      <button
+                        type="button"
+                        data-ui="live-tv-channel-select"
+                        aria-pressed={active}
+                        title={channel.Name ?? ''}
+                        onClick={() => select(channel)}
+                        onDoubleClick={() => watch(channel)}
+                      >
+                        <span className="live-tv-channel-number">
+                          {channel.ChannelNumber}
+                        </span>
+                        <ChannelLogo channel={channel} />
+                        <span className="live-tv-channel-copy">
+                          <span className="live-tv-channel-name">
+                            {label.title}
+                          </span>
+                          {onNow?.Name && (
+                            <span className="live-tv-channel-program">
+                              {onNow.Name}
+                            </span>
+                          )}
+                        </span>
+                        <span className="live-tv-channel-quality">
+                          {quality && <span>{quality}</span>}
+                        </span>
+                      </button>
+                      <button
+                        type="button"
+                        className="live-tv-quick-play"
+                        aria-label={t`Watch ${channelName}`}
+                        onClick={() => watch(channel)}
+                      >
+                        <BiPlay aria-hidden />
+                      </button>
+                      {active && onNow && (
+                        <span
+                          aria-hidden
+                          className="live-tv-channel-progress"
+                          style={{
+                            width: `${programProgress(onNow, now) * 100}%`,
+                          }}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+                {!filtered.length && (
+                  <p className="live-tv-filter-empty">
+                    <Trans>No channels match your search or filter.</Trans>
+                  </p>
+                )}
+              </div>
+            </aside>
           </div>
-        </section>
-      )}
+        )}
+      </div>
     </PageBody>
   );
 }

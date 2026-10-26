@@ -146,6 +146,10 @@ msgstr "{members, plural, one {# oglądający} few {# oglądających} many {# og
 msgid "{minutes}m"
 msgstr "{minutes} min"
 
+#: src/pages/live-tv.tsx
+msgid "{minutesLeft, plural, one {# minute left} other {# minutes left}}"
+msgstr ""
+
 #: src/pages/history.tsx
 msgid "{movieCount, plural, one {# movie watched} other {# movies watched}}"
 msgstr "{movieCount, plural, one {# obejrzany film} few {# obejrzane filmy} many {# obejrzanych filmów} other {# obejrzanego filmu}}"
@@ -489,6 +493,14 @@ msgstr "Premiera {until}"
 msgid "All"
 msgstr "Wszystko"
 
+#: src/pages/live-tv.tsx
+msgid "All categories"
+msgstr ""
+
+#: src/pages/live-tv.tsx
+msgid "All channels"
+msgstr ""
+
 #: src/pages/item.tsx
 msgid "All episodes"
 msgstr "Wszystkie odcinki"
@@ -736,6 +748,10 @@ msgstr "Dolny pasek"
 msgid "Brightness {percent}%"
 msgstr "Jasność {percent}%"
 
+#: src/pages/live-tv.tsx
+msgid "Browse program guide"
+msgstr ""
+
 #: src/lib/input/keys.ts
 msgid "Browser Home"
 msgstr "Browser Home"
@@ -798,6 +814,7 @@ msgstr "Brak połączenia z serwerem"
 msgid "Cancel"
 msgstr "Anuluj"
 
+#: src/pages/live-recordings.tsx
 #: src/pages/live-tv.tsx
 msgid "Cancel recording"
 msgstr ""
@@ -848,13 +865,17 @@ msgid "Channel"
 msgstr "Kanał"
 
 #: src/pages/live-tv.tsx
+msgid "Channel category"
+msgstr ""
+
+#: src/pages/live-tv.tsx
+msgid "Channel filters"
+msgstr ""
+
+#: src/pages/live-tv.tsx
 #: src/pages/settings/audio.tsx
 msgid "Channels"
 msgstr "Kanały"
-
-#: src/pages/live-tv.tsx
-msgid "Channels & guide"
-msgstr ""
 
 #: src/pages/live-tv.tsx
 msgid "Channels could not be loaded. Check your connection and try again."
@@ -1596,15 +1617,9 @@ msgstr "Przewiń do przodu"
 msgid "Faster"
 msgstr "Szybciej"
 
+#: src/components/layout.tsx
+#: src/pages/favourites.tsx
 #: src/pages/live-tv.tsx
-msgid "Favorite"
-msgstr ""
-
-#: src/pages/live-tv.tsx
-msgid "Favorite channels"
-msgstr ""
-
-#: src/components/layout.tsx src/pages/favourites.tsx
 #: src/pages/settings/apps.tsx
 msgid "Favourites"
 msgstr "Ulubione"
@@ -2110,7 +2125,12 @@ msgid "Listening…"
 msgstr "Słucham…"
 
 #: src/pages/live-player.tsx
+#: src/pages/live-tv.tsx
 msgid "Live"
+msgstr ""
+
+#: src/pages/live-tv.tsx
+msgid "Live channels"
 msgstr ""
 
 #: src/components/layout.tsx
@@ -2139,7 +2159,7 @@ msgid "Loading guide…"
 msgstr ""
 
 #: src/components/version-settings.tsx
-#: src/pages/live-tv.tsx
+#: src/pages/live-recordings.tsx
 msgid "Loading…"
 msgstr "Wczytywanie…"
 
@@ -2476,11 +2496,11 @@ msgstr "Nie znaleziono wersji możliwej do odtworzenia"
 msgid "No playlists yet. Make one here, or add a title to one from its menu."
 msgstr ""
 
-#: src/pages/live-tv.tsx
+#: src/pages/live-recordings.tsx
 msgid "No recordings are scheduled."
 msgstr ""
 
-#: src/pages/live-tv.tsx
+#: src/pages/live-recordings.tsx
 msgid "No recordings yet."
 msgstr ""
 
@@ -3348,11 +3368,12 @@ msgstr ""
 msgid "Recording scheduled"
 msgstr ""
 
+#: src/pages/live-recordings.tsx
 #: src/pages/live-tv.tsx
 msgid "Recordings"
 msgstr ""
 
-#: src/pages/live-tv.tsx
+#: src/pages/live-recordings.tsx
 msgid "Recordings could not be loaded."
 msgstr ""
 
@@ -3641,11 +3662,11 @@ msgstr "Zobaczyłem"
 msgid "Saw its subtitle"
 msgstr "Zobaczyłem napisy"
 
-#: src/pages/live-tv.tsx
+#: src/pages/live-recordings.tsx
 msgid "Scheduled recordings"
 msgstr ""
 
-#: src/pages/live-tv.tsx
+#: src/pages/live-recordings.tsx
 msgid "Scheduled recordings could not be loaded."
 msgstr ""
 
@@ -4400,6 +4421,7 @@ msgstr "Odtwarzacz aplikacji"
 msgid "The app's player and its options, such as starting videos in landscape."
 msgstr "Odtwarzacz aplikacji i jego opcje, takie jak uruchamianie wideo w orientacji poziomej."
 
+#: src/pages/live-recordings.tsx
 #: src/pages/live-tv.tsx
 msgid "The change could not be saved. Try again."
 msgstr ""
@@ -4679,6 +4701,7 @@ msgid "Titles, synopses and stream names stay in the language your addons send."
 msgstr "Tytuły, opisy fabuły i nazwy strumieni pozostają w języku przesyłanym przez Twoje dodatki."
 
 #: src/pages/calendar.tsx
+#: src/pages/live-tv.tsx
 msgid "Today"
 msgstr "Dzisiaj"
 
@@ -4814,6 +4837,7 @@ msgid "Up"
 msgstr "W górę"
 
 #: src/components/player/next-episode.tsx
+#: src/pages/live-tv.tsx
 msgid "Up next"
 msgstr ""
 
@@ -5006,6 +5030,10 @@ msgstr "Oczekiwanie na: {names}"
 #: src/pages/sign-in.tsx
 msgid "Waiting for approval…"
 msgstr "Oczekiwanie na zatwierdzenie…"
+
+#: src/pages/live-tv.tsx
+msgid "Watch {channelName}"
+msgstr ""
 
 #: src/components/party/party-sheet.tsx
 msgid "Watch along"

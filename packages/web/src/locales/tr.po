@@ -141,6 +141,10 @@ msgstr "{members, plural, other {# kişi izliyor}}"
 msgid "{minutes}m"
 msgstr "{minutes} dk."
 
+#: src/pages/live-tv.tsx
+msgid "{minutesLeft, plural, one {# minute left} other {# minutes left}}"
+msgstr "{minutesLeft, plural, one {# dakika kaldı} other {# dakika kaldı}}"
+
 #: src/pages/history.tsx
 msgid "{movieCount, plural, one {# movie watched} other {# movies watched}}"
 msgstr "{movieCount, plural, other {# film izlendi}}"
@@ -493,6 +497,14 @@ msgstr "{until} yayınlanacak"
 msgid "All"
 msgstr "Tümü"
 
+#: src/pages/live-tv.tsx
+msgid "All categories"
+msgstr "Tüm kategoriler"
+
+#: src/pages/live-tv.tsx
+msgid "All channels"
+msgstr "Tüm kanallar"
+
 #: src/pages/item.tsx
 msgid "All episodes"
 msgstr "Tüm bölümler"
@@ -750,6 +762,10 @@ msgstr "Alt çubuk"
 msgid "Brightness {percent}%"
 msgstr "Parlaklık %{percent}"
 
+#: src/pages/live-tv.tsx
+msgid "Browse program guide"
+msgstr "Yayın akışını gez"
+
 #: src/lib/input/keys.ts
 msgid "Browser Home"
 msgstr "Tarayıcı ana sayfası"
@@ -820,6 +836,7 @@ msgstr "Sunucuya ulaşılamıyor"
 msgid "Cancel"
 msgstr "İptal"
 
+#: src/pages/live-recordings.tsx
 #: src/pages/live-tv.tsx
 msgid "Cancel recording"
 msgstr "Kaydı iptal et"
@@ -871,13 +888,17 @@ msgid "Channel"
 msgstr "Kanal"
 
 #: src/pages/live-tv.tsx
+msgid "Channel category"
+msgstr "Kanal kategorisi"
+
+#: src/pages/live-tv.tsx
+msgid "Channel filters"
+msgstr "Kanal filtreleri"
+
+#: src/pages/live-tv.tsx
 #: src/pages/settings/audio.tsx
 msgid "Channels"
 msgstr "Kanallar"
-
-#: src/pages/live-tv.tsx
-msgid "Channels & guide"
-msgstr "Kanallar ve yayın akışı"
 
 #: src/pages/live-tv.tsx
 msgid "Channels could not be loaded. Check your connection and try again."
@@ -1642,16 +1663,9 @@ msgstr "İleri sar"
 msgid "Faster"
 msgstr "Hızlandır"
 
-#: src/pages/live-tv.tsx
-msgid "Favorite"
-msgstr "Favori"
-
-#: src/pages/live-tv.tsx
-msgid "Favorite channels"
-msgstr "Favori kanallar"
-
 #: src/components/layout.tsx
 #: src/pages/favourites.tsx
+#: src/pages/live-tv.tsx
 #: src/pages/settings/apps.tsx
 msgid "Favourites"
 msgstr "Favoriler"
@@ -2166,8 +2180,13 @@ msgid "Listening…"
 msgstr "Dinleniyor…"
 
 #: src/pages/live-player.tsx
+#: src/pages/live-tv.tsx
 msgid "Live"
 msgstr "Canlı"
+
+#: src/pages/live-tv.tsx
+msgid "Live channels"
+msgstr "Canlı yayın"
 
 #: src/components/layout.tsx
 #: src/pages/live-tv.tsx
@@ -2195,7 +2214,7 @@ msgid "Loading guide…"
 msgstr "Yayın akışı yükleniyor…"
 
 #: src/components/version-settings.tsx
-#: src/pages/live-tv.tsx
+#: src/pages/live-recordings.tsx
 msgid "Loading…"
 msgstr "Yükleniyor…"
 
@@ -2550,11 +2569,11 @@ msgstr "Oynatılabilir sürüm bulunamadı"
 msgid "No playlists yet. Make one here, or add a title to one from its menu."
 msgstr "Henüz oynatma listesi yok. Buradan oluştur veya bir içeriği menüsünden listeye ekle."
 
-#: src/pages/live-tv.tsx
+#: src/pages/live-recordings.tsx
 msgid "No recordings are scheduled."
 msgstr "Planlanmış kayıt yok."
 
-#: src/pages/live-tv.tsx
+#: src/pages/live-recordings.tsx
 msgid "No recordings yet."
 msgstr "Henüz kayıt yok."
 
@@ -3444,11 +3463,12 @@ msgstr "Kaydet"
 msgid "Recording scheduled"
 msgstr "Kayıt planlandı"
 
+#: src/pages/live-recordings.tsx
 #: src/pages/live-tv.tsx
 msgid "Recordings"
 msgstr "Kayıtlar"
 
-#: src/pages/live-tv.tsx
+#: src/pages/live-recordings.tsx
 msgid "Recordings could not be loaded."
 msgstr "Kayıtlar yüklenemedi."
 
@@ -3744,11 +3764,11 @@ msgstr "Gördüm"
 msgid "Saw its subtitle"
 msgstr "Altyazısını gördüm"
 
-#: src/pages/live-tv.tsx
+#: src/pages/live-recordings.tsx
 msgid "Scheduled recordings"
 msgstr "Planlanmış kayıtlar"
 
-#: src/pages/live-tv.tsx
+#: src/pages/live-recordings.tsx
 msgid "Scheduled recordings could not be loaded."
 msgstr "Planlanmış kayıtlar yüklenemedi."
 
@@ -4529,6 +4549,7 @@ msgstr "Uygulamanın oynatıcısı"
 msgid "The app's player and its options, such as starting videos in landscape."
 msgstr "Uygulamanın oynatıcısı ve videoları yatay başlatma gibi seçenekleri."
 
+#: src/pages/live-recordings.tsx
 #: src/pages/live-tv.tsx
 msgid "The change could not be saved. Try again."
 msgstr "Değişiklik kaydedilemedi. Tekrar dene."
@@ -4811,6 +4832,7 @@ msgid "Titles, synopses and stream names stay in the language your addons send."
 msgstr "İçerik adları, özetler ve yayın adları, eklentilerinin gönderdiği dilde kalır."
 
 #: src/pages/calendar.tsx
+#: src/pages/live-tv.tsx
 msgid "Today"
 msgstr "Bugün"
 
@@ -4946,6 +4968,7 @@ msgid "Up"
 msgstr "Yukarı"
 
 #: src/components/player/next-episode.tsx
+#: src/pages/live-tv.tsx
 msgid "Up next"
 msgstr "Sıradaki"
 
@@ -5140,6 +5163,10 @@ msgstr "{names} bekleniyor"
 #: src/pages/sign-in.tsx
 msgid "Waiting for approval…"
 msgstr "Onay bekleniyor…"
+
+#: src/pages/live-tv.tsx
+msgid "Watch {channelName}"
+msgstr "{channelName} kanalını izle"
 
 #: src/components/party/party-sheet.tsx
 msgid "Watch along"
