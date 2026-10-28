@@ -1,0 +1,41 @@
+name: Inspect Turkish PR rebase
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_head:
+        description: Expected head of the Turkish contribution
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: feat/turkish-localization
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Inspect rebase against current upstream
+        env:
+          EXPECTED_HEAD: ${{ inputs.expected_head }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          git config user.name ardakrt
+          git config user.email 81361836+ardakrt@users.noreply.github.com
+          git remote add upstream https://github.com/Viren070/AIOStreams.git
+          git fetch --no-tags upstream main
+          echo "Upstream: $(git rev-parse upstream/main)"
+          if ! git rebase upstream/main; then
+            echo "Conflicted paths:"
+            git diff --name-only --diff-filter=U
+            git status --short
+            git diff --cc --stat
+            exit 1
+          fi
+          git diff --stat upstream/main...HEAD
