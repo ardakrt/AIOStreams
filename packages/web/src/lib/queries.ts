@@ -32,6 +32,9 @@ import type {
 
 const PAGE = 60;
 
+/** The rotating home hero uses these lists directly, without a detail request. */
+const HERO_FIELDS = 'Overview,Genres';
+
 /** Every key starts here, so a user switch or sign-out drops them all. */
 function useKey() {
   const { client, user } = useSession();
@@ -86,13 +89,14 @@ export function libraryTypes(view: BaseItemDto): string {
 export function useResume() {
   const { client, user } = useSession();
   return useQuery({
-    queryKey: [...useKey(), 'resume'],
+    queryKey: [...useKey(), 'resume', HERO_FIELDS],
     meta: { cache: 'home' },
     queryFn: () =>
       client.get<BaseItemDtoQueryResult>('/UserItems/Resume', {
         userId: user.Id,
         Limit: 24,
         MediaTypes: 'Video',
+        Fields: HERO_FIELDS,
       }),
   });
 }
@@ -100,13 +104,14 @@ export function useResume() {
 export function useNextUp() {
   const { client, user } = useSession();
   return useQuery({
-    queryKey: [...useKey(), 'next-up'],
+    queryKey: [...useKey(), 'next-up', HERO_FIELDS],
     meta: { cache: 'home' },
     queryFn: () =>
       client.get<BaseItemDtoQueryResult>('/Shows/NextUp', {
         userId: user.Id,
         Limit: 24,
         EnableResumable: false,
+        Fields: HERO_FIELDS,
       }),
   });
 }
@@ -204,7 +209,7 @@ export function useLibraryHeads(views: BaseItemDto[], limit: number) {
   const genreRequired = useFeature('genreRequired');
   return useQueries({
     queries: views.map((view) => ({
-      queryKey: [...key, 'head', view.Id, limit],
+      queryKey: [...key, 'head', view.Id, limit, HERO_FIELDS],
       meta: { cache: 'home' },
       queryFn: async () => {
         const required = genreRequired && needsGenre(view);
@@ -220,6 +225,7 @@ export function useLibraryHeads(views: BaseItemDto[], limit: number) {
           GenreIds: defaultGenre(offered?.Items, required)?.Id,
           Recursive: true,
           Limit: limit,
+          Fields: HERO_FIELDS,
         });
       },
       staleTime: 5 * 60_000,
