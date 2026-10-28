@@ -1,0 +1,171 @@
+name: Refresh and validate Turkish contribution
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_head:
+        description: Expected current PR head
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  web:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      revision: ${{ steps.stage.outputs.revision }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: feat/turkish-localization
+          fetch-depth: 0
+      - name: Rebase and reconcile existing Turkish contributions
+        env:
+          EXPECTED_HEAD: ${{ inputs.expected_head }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          git config user.name ardakrt
+          git config user.email 81361836+ardakrt@users.noreply.github.com
+          git branch contribution-before-rebase HEAD
+          git remote add upstream https://github.com/Viren070/AIOStreams.git
+          git fetch --no-tags upstream main
+          echo "UPSTREAM_REVISION=$(git rev-parse upstream/main)" >> "$GITHUB_ENV"
+          if ! git rebase upstream/main; then
+            conflicts="$(git diff --name-only --diff-filter=U)"
+            while IFS= read -r file; do
+              case "$file" in
+                packages/web/src/locales/tr.po|packages/android/app/src/main/res/values-tr/strings.xml) ;;
+                *) echo "::error::Unexpected rebase conflict: $file"; exit 1 ;;
+              esac
+            done <<< "$conflicts"
+            git checkout --ours packages/android/app/src/main/res/values-tr/strings.xml
+            python3 <<'PY'
+          import json,re,subprocess
+          from pathlib import Path
+          
+          path='packages/web/src/locales/tr.po'
+          def read(ref):
+              return subprocess.check_output(['git','show',ref+':'+path]).decode('utf-8')
+          def parse(text):
+              header=None; entries={}
+              for block in re.split(r'\n\s*\n',text.strip()):
+                  fields={};active=None
+                  for line in block.splitlines():
+                      match=re.match(r'(msgctxt|msgid|msgstr)\s+(".*")$',line)
+                      if match:
+                          active=match[1]; fields[active]=json.loads(match[2])
+                      elif line.startswith('"') and active:
+                          fields[active]+=json.loads(line)
+                  if fields.get('msgid'):
+                      entries[(fields.get('msgctxt',''),fields['msgid'])]=(fields.get('msgstr',''),block)
+                  elif fields.get('msgid')=='':
+                      header=block
+              return header,entries
+          up_header,up=parse(read('upstream/main'))
+          _,ours=parse(read('contribution-before-rebase'))
+          source_path=Path('packages/web/src/locales/en-GB.po')
+          _,source=parse(source_path.read_text())
+          new={
+           'A card you rest on grows into a bigger preview with its details, while the hero rotates.':'Üzerinde beklediğiniz kart, ayrıntılarını içeren daha büyük bir önizlemeye dönüşür; öne çıkan içerik ise sırayla değişir.',
+           'Whether the bar at the bottom, and tabs along the top, name each page.':'Alttaki çubuğun ve üstteki sekmelerin sayfa adlarını gösterip göstermeyeceği.',
+           'Whether the tabs name each page beside its icon.':'Sekmelerin, simgelerinin yanında sayfa adlarını gösterip göstermeyeceği.',
+           'Tab names':'Sekme adları',
+           'Rating':'Puan',
+           'Sidebar':'Kenar çubuğu',
+           'Specials':'Özel bölümler',
+           'Cards':'Kartlar',
+           'Rotten Tomatoes audience':'Rotten Tomatoes izleyici puanı',
+           'Season {season}':'{season}. sezon',
+           'Where the navigation goes when the window is wide enough for a sidebar.':'Pencere kenar çubuğuna yetecek kadar geniş olduğunda gezinme menüsünün konumu.',
+          }
+          def translated_block(block,value):
+              pattern=r'(?m)^msgstr "(?:\\.|[^"\\])*"(?:\n"(?:\\.|[^"\\])*")*'
+              result,n=re.subn(pattern,lambda _: 'msgstr '+json.dumps(value,ensure_ascii=False),block)
+              assert n==1,block
+              return result
+          merged=[];preserved=0;added=0
+          for key,(_,source_block) in source.items():
+              upstream=up.get(key)
+              if upstream and upstream[0].strip() and '#, fuzzy' not in upstream[1] and key[1]!='{left} left':
+                  block=upstream[1];preserved+=1
+              elif key in ours:
+                  block=ours[key][1]
+              elif key[1] in new:
+                  block=translated_block(source_block,new[key[1]]);added+=1
+              else:
+                  raise RuntimeError('New source message needs translation: '+repr(key))
+              merged.append(block)
+          Path(path).write_text(up_header+'\n\n'+'\n\n'.join(merged)+'\n',encoding='utf-8')
+          print(json.dumps({'sourceMessages':len(source),'preservedUpstream':preserved,'newMessagesTranslated':added,'contextualCorrection':'{left} left: ayrıldı -> kaldı'},ensure_ascii=False))
+          
+          PY
+            git add packages/web/src/locales/tr.po packages/android/app/src/main/res/values-tr/strings.xml
+            GIT_EDITOR=true git rebase --continue
+          fi
+          
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+      - name: Install dependencies on the GitHub runner
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+      - name: Build shared core
+        run: pnpm -F @aiostreams/core build
+      - name: Synchronize localization catalogs
+        run: pnpm -F @aiostreams/web i18n:extract
+      - name: Verify complete Turkish coverage and placeholders
+        run: pnpm -F @aiostreams/web test:i18n:tr
+      - name: Lint and type check web application
+        run: |
+          pnpm -F @aiostreams/web lint
+          pnpm -F @aiostreams/web typecheck
+      - name: Build standalone application
+        run: pnpm -F @aiostreams/web build:standalone
+      - name: Stage the verified contribution without changing the PR
+        id: stage
+        run: |
+          git diff --check
+          git add packages/web/src/locales
+          if ! git diff --cached --quiet; then
+            git commit --amend --no-edit
+          fi
+          test "$(git ls-remote upstream refs/heads/main | cut -f1)" = "$UPSTREAM_REVISION"
+          old="$(git ls-remote origin refs/heads/codex/turkish-rebased-ready | cut -f1)"
+          git push origin HEAD:refs/heads/codex/turkish-rebased-ready --force-with-lease="refs/heads/codex/turkish-rebased-ready:$old"
+          revision="$(git rev-parse HEAD)"
+          echo "revision=$revision" >> "$GITHUB_OUTPUT"
+          echo "Tested web revision: $revision" >> "$GITHUB_STEP_SUMMARY"
+          echo "Upstream revision: $UPSTREAM_REVISION" >> "$GITHUB_STEP_SUMMARY"
+          git diff --stat upstream/main...HEAD
+          
+  desktop:
+    needs: web
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: packages/desktop
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ needs.web.outputs.revision }}
+          persist-credentials: false
+      - name: Install Linux system libraries on the runner
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libgtk-4-dev libwebkitgtk-6.0-dev
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - run: cargo fmt --all --check
+      - run: cargo test -p aiostreams-desktop-core --lib bridge::tests --locked
+      - run: cargo check --workspace --locked
