@@ -89,7 +89,7 @@ jobs:
           merged=[];preserved=0;added=0
           for key,(_,source_block) in source.items():
               upstream=up.get(key)
-              if upstream and upstream[0].strip() and '#, fuzzy' not in upstream[1] and key[1]!='{left} left':
+              if upstream and upstream[0].strip() and '#, fuzzy' not in upstream[1] and key[1]!='{left} left' and (upstream[0]!=key[1] or ours.get(key,('',))[0]==key[1]):
                   block=upstream[1];preserved+=1
               elif key in ours:
                   block=ours[key][1]
