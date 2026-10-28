@@ -127,6 +127,7 @@ msgstr "{inProgress, plural, other {# devam eden}}"
 msgid "{key} is taken by {taken}"
 msgstr "{key} tuşu zaten {taken} için kullanılıyor"
 
+#: src/components/card-preview.tsx
 #: src/pages/downloads.tsx
 #: src/pages/home.tsx
 msgid "{left} left"
@@ -322,6 +323,10 @@ msgstr "7.1 çevresel ses"
 #: src/components/version-settings.tsx
 msgid "A badge shows on each version whose text matches its pattern: the name and description your formatter writes, the file name, and the tags read from it."
 msgstr "Bir sürümün metni desenle eşleşirse rozet gösterilir. Biçimlendiricinin oluşturduğu ad ve açıklama, dosya adı ve dosyadan okunan etiketler kontrol edilir."
+
+#: src/pages/settings/interface.tsx
+msgid "A card you rest on grows into a bigger preview with its details, while the hero rotates."
+msgstr "Üzerinde beklediğin kart, vitrin dönerken ayrıntılarını içeren daha büyük bir önizlemeye dönüşür."
 
 #: src/components/party/party-sheet.tsx
 msgid "A code is looked up on the relay picked above."
@@ -836,6 +841,10 @@ msgstr "İptal"
 #: src/pages/live-tv.tsx
 msgid "Cancel recording"
 msgstr "Kaydı iptal et"
+
+#: src/pages/settings/interface.tsx
+msgid "Cards"
+msgstr "Kartlar"
 
 #: src/components/people.tsx
 msgid "Cast"
@@ -1575,6 +1584,7 @@ msgid "Enter your password."
 msgstr "Parolanı gir."
 
 #: src/components/episodes.tsx
+#: src/components/player/pause-screen.tsx
 msgid "Episode {number}"
 msgstr "{number}. bölüm"
 
@@ -3293,6 +3303,7 @@ msgstr "Çıkmak için Geri tuşuna tekrar bas"
 msgid "Preview"
 msgstr "Önizleme"
 
+#: src/pages/settings/interface.tsx
 #: src/pages/settings/playback.tsx
 msgid "Previews"
 msgstr "Önizlemeler"
@@ -3400,6 +3411,10 @@ msgstr "Puan ver"
 #: src/pages/item.tsx
 msgid "Rate season"
 msgstr "Sezona puan ver"
+
+#: src/components/scores.tsx
+msgid "Rating"
+msgstr "Puan"
 
 #: src/components/party/party-sheet.tsx
 msgid "React with {emoji}"
@@ -3658,6 +3673,10 @@ msgstr "Sağ"
 msgid "Rotates through featured titles"
 msgstr "Öne çıkan içerikleri sırayla gösterir"
 
+#: src/components/scores.tsx
+msgid "Rotten Tomatoes audience"
+msgstr "Rotten Tomatoes izleyici puanı"
+
 #: src/pages/settings/interface.tsx
 msgid "Row"
 msgstr "Yatay sıra"
@@ -3793,6 +3812,10 @@ msgstr "Aramalar"
 #: src/lib/discord.ts
 msgid "Searching"
 msgstr "Aranıyor"
+
+#: src/components/player/pause-screen.tsx
+msgid "Season {season}"
+msgstr "{season}. sezon"
 
 #: src/components/item-menu.tsx
 msgid "See the download"
@@ -3994,6 +4017,10 @@ msgstr "Yan menü"
 msgid "Side rail runs down the side of the screen; Top tabs sit along the top of each page."
 msgstr "Yan menü ekranın kenarında, Üst sekmeler ise her sayfanın üst kısmında yer alır."
 
+#: src/pages/settings/interface.tsx
+msgid "Sidebar"
+msgstr "Yan menü"
+
 #: src/pages/sign-in.tsx
 msgid "Sign in"
 msgstr "Oturum aç"
@@ -4175,6 +4202,10 @@ msgstr "Boşluk"
 #: src/pages/settings/cache.tsx
 msgid "Space to use"
 msgstr "Kullanılacak alan"
+
+#: src/components/player/pause-screen.tsx
+msgid "Specials"
+msgstr "Özel bölümler"
 
 #: src/components/player/options.tsx
 msgid "Speed"
@@ -4404,6 +4435,10 @@ msgstr "Sistem varsayılanı"
 #: src/lib/input/keys.ts
 msgid "Tab"
 msgstr "Tab"
+
+#: src/pages/settings/interface.tsx
+msgid "Tab names"
+msgstr "Sekme adları"
 
 #: src/pages/history.tsx
 msgid "Table"
@@ -5307,9 +5342,17 @@ msgstr "Uygulamanın geliştirildiği ve sorun bildirebileceğin yer."
 msgid "Where the navigation goes when the screen is wide enough for a sidebar, such as a tablet held sideways."
 msgstr "Yatay tutulan tablet gibi, yan menü için yeterince geniş ekranlarda gezinme menüsünün konumu."
 
+#: src/pages/settings/interface.tsx
+msgid "Where the navigation goes when the window is wide enough for a sidebar."
+msgstr "Pencere yan menüye yetecek kadar geniş olduğunda gezinme menüsünün nerede gösterileceği."
+
 #: src/pages/settings/index.tsx
 msgid "Where they go and how many run at once"
 msgstr "Kayıt konumu ve eş zamanlı indirme sayısı"
+
+#: src/pages/settings/interface.tsx
+msgid "Whether the bar at the bottom, and tabs along the top, name each page."
+msgstr "Alttaki çubukta ve üstteki sekmelerde sayfa adlarının gösterilip gösterilmeyeceği."
 
 #: src/pages/settings/interface.tsx
 msgid "Whether the rail names each page only while you're in it, or all the time."
@@ -5318,6 +5361,10 @@ msgstr "Yan menüde sayfa adlarının yalnızca o sayfadayken mi, her zaman mı 
 #: src/pages/settings/interface.tsx
 msgid "Whether the rail names each page under its icon."
 msgstr "Yan menüde simgelerin altında sayfa adlarının gösterilip gösterilmeyeceği."
+
+#: src/pages/settings/interface.tsx
+msgid "Whether the tabs name each page beside its icon."
+msgstr "Sekmelerde simgenin yanında sayfa adının gösterilip gösterilmeyeceği."
 
 #: src/components/shortcut-settings.tsx
 msgid "While syncing subtitles by ear."

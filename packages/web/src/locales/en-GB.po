@@ -127,6 +127,7 @@ msgstr "{inProgress, plural, one {# in progress} other {# in progress}}"
 msgid "{key} is taken by {taken}"
 msgstr "{key} is taken by {taken}"
 
+#: src/components/card-preview.tsx
 #: src/pages/downloads.tsx
 #: src/pages/home.tsx
 msgid "{left} left"
@@ -322,6 +323,10 @@ msgstr "7.1 surround"
 #: src/components/version-settings.tsx
 msgid "A badge shows on each version whose text matches its pattern: the name and description your formatter writes, the file name, and the tags read from it."
 msgstr "A badge shows on each version whose text matches its pattern: the name and description your formatter writes, the file name, and the tags read from it."
+
+#: src/pages/settings/interface.tsx
+msgid "A card you rest on grows into a bigger preview with its details, while the hero rotates."
+msgstr "A card you rest on grows into a bigger preview with its details, while the hero rotates."
 
 #: src/components/party/party-sheet.tsx
 msgid "A code is looked up on the relay picked above."
@@ -836,6 +841,10 @@ msgstr "Cancel"
 #: src/pages/live-tv.tsx
 msgid "Cancel recording"
 msgstr "Cancel recording"
+
+#: src/pages/settings/interface.tsx
+msgid "Cards"
+msgstr "Cards"
 
 #: src/components/people.tsx
 msgid "Cast"
@@ -1575,6 +1584,7 @@ msgid "Enter your password."
 msgstr "Enter your password."
 
 #: src/components/episodes.tsx
+#: src/components/player/pause-screen.tsx
 msgid "Episode {number}"
 msgstr "Episode {number}"
 
@@ -3293,6 +3303,7 @@ msgstr "Press Back again to leave"
 msgid "Preview"
 msgstr "Preview"
 
+#: src/pages/settings/interface.tsx
 #: src/pages/settings/playback.tsx
 msgid "Previews"
 msgstr "Previews"
@@ -3400,6 +3411,10 @@ msgstr "Rate"
 #: src/pages/item.tsx
 msgid "Rate season"
 msgstr "Rate season"
+
+#: src/components/scores.tsx
+msgid "Rating"
+msgstr "Rating"
 
 #: src/components/party/party-sheet.tsx
 msgid "React with {emoji}"
@@ -3658,6 +3673,10 @@ msgstr "Right"
 msgid "Rotates through featured titles"
 msgstr "Rotates through featured titles"
 
+#: src/components/scores.tsx
+msgid "Rotten Tomatoes audience"
+msgstr "Rotten Tomatoes audience"
+
 #: src/pages/settings/interface.tsx
 msgid "Row"
 msgstr "Row"
@@ -3793,6 +3812,10 @@ msgstr "Searches"
 #: src/lib/discord.ts
 msgid "Searching"
 msgstr "Searching"
+
+#: src/components/player/pause-screen.tsx
+msgid "Season {season}"
+msgstr "Season {season}"
 
 #: src/components/item-menu.tsx
 msgid "See the download"
@@ -3994,6 +4017,10 @@ msgstr "Side rail"
 msgid "Side rail runs down the side of the screen; Top tabs sit along the top of each page."
 msgstr "Side rail runs down the side of the screen; Top tabs sit along the top of each page."
 
+#: src/pages/settings/interface.tsx
+msgid "Sidebar"
+msgstr "Sidebar"
+
 #: src/pages/sign-in.tsx
 msgid "Sign in"
 msgstr "Sign in"
@@ -4175,6 +4202,10 @@ msgstr "Space"
 #: src/pages/settings/cache.tsx
 msgid "Space to use"
 msgstr "Space to use"
+
+#: src/components/player/pause-screen.tsx
+msgid "Specials"
+msgstr "Specials"
 
 #: src/components/player/options.tsx
 msgid "Speed"
@@ -4404,6 +4435,10 @@ msgstr "System default"
 #: src/lib/input/keys.ts
 msgid "Tab"
 msgstr "Tab"
+
+#: src/pages/settings/interface.tsx
+msgid "Tab names"
+msgstr "Tab names"
 
 #: src/pages/history.tsx
 msgid "Table"
@@ -5307,9 +5342,17 @@ msgstr "Where the app is made, and where to report a problem."
 msgid "Where the navigation goes when the screen is wide enough for a sidebar, such as a tablet held sideways."
 msgstr "Where the navigation goes when the screen is wide enough for a sidebar, such as a tablet held sideways."
 
+#: src/pages/settings/interface.tsx
+msgid "Where the navigation goes when the window is wide enough for a sidebar."
+msgstr "Where the navigation goes when the window is wide enough for a sidebar."
+
 #: src/pages/settings/index.tsx
 msgid "Where they go and how many run at once"
 msgstr "Where they go and how many run at once"
+
+#: src/pages/settings/interface.tsx
+msgid "Whether the bar at the bottom, and tabs along the top, name each page."
+msgstr "Whether the bar at the bottom, and tabs along the top, name each page."
 
 #: src/pages/settings/interface.tsx
 msgid "Whether the rail names each page only while you're in it, or all the time."
@@ -5318,6 +5361,10 @@ msgstr "Whether the rail names each page only while you're in it, or all the tim
 #: src/pages/settings/interface.tsx
 msgid "Whether the rail names each page under its icon."
 msgstr "Whether the rail names each page under its icon."
+
+#: src/pages/settings/interface.tsx
+msgid "Whether the tabs name each page beside its icon."
+msgstr "Whether the tabs name each page beside its icon."
 
 #: src/components/shortcut-settings.tsx
 msgid "While syncing subtitles by ear."
